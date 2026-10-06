@@ -20,33 +20,110 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. ScrollSpy Navigation Active State Indicator
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
+    // 2. High-Precision ScrollSpy & Active Header Indicator System
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+    const desktopLinks = document.querySelectorAll('.nav-link');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 
-    if (sections.length && navLinks.length) {
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.4
-        };
+    // Section ID to Navigation Target ID mapping for smooth coverage
+    const sectionNavMap = {
+        'hero': 'hero',
+        'intro': 'hero',         // Editorial intro falls under Home umbrella
+        'services': 'services',
+        'portfolio': 'portfolio',
+        'testimonials': 'about', // Testimonials spotlight falls under About umbrella
+        'about': 'about',
+        'faq': 'faq',
+        'location': 'contact',   // Location map falls under Contact umbrella
+        'contact': 'contact'
+    };
 
-        const observerCallback = (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    navLinks.forEach(link => link.classList.remove('active'));
-                    const id = entry.target.getAttribute('id');
-                    const targetLink = document.querySelector(`.nav-link[href="#${id}"]`);
-                    if (targetLink) {
-                        targetLink.classList.add('active');
-                    }
+    function updateActiveNavState() {
+        const scrollPosition = window.scrollY || window.pageYOffset;
+        const viewportHeight = window.innerHeight;
+        const totalHeight = document.documentElement.scrollHeight;
+        let activeTargetId = 'hero';
+
+        // Check if near bottom of page -> activate contact link
+        if (viewportHeight + scrollPosition >= totalHeight - 60) {
+            activeTargetId = 'contact';
+        } else if (scrollPosition < 80) {
+            activeTargetId = 'hero';
+        } else {
+            // Find section closest to reading focus line (30% from viewport top)
+            const focusLine = scrollPosition + (viewportHeight * 0.3);
+
+            for (let i = 0; i < sections.length; i++) {
+                const section = sections[i];
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+
+                if (focusLine >= sectionTop && focusLine < sectionBottom) {
+                    const secId = section.getAttribute('id');
+                    activeTargetId = sectionNavMap[secId] || secId;
+                    break;
                 }
-            });
-        };
+            }
+        }
 
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-        sections.forEach(section => observer.observe(section));
+        // Apply active class to desktop links
+        desktopLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${activeTargetId}`) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Apply active class to mobile links
+        mobileLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${activeTargetId}`) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     }
+
+    // Attach listener to window scroll and Lenis scroll ticker
+    window.addEventListener('scroll', updateActiveNavState, { passive: true });
+    if (window.lenis) {
+        window.lenis.on('scroll', updateActiveNavState);
+    } else {
+        const checkLenisTimer = setInterval(() => {
+            if (window.lenis) {
+                window.lenis.on('scroll', updateActiveNavState);
+                clearInterval(checkLenisTimer);
+            }
+        }, 300);
+        setTimeout(() => clearInterval(checkLenisTimer), 5000);
+    }
+
+    // Initial state check
+    updateActiveNavState();
+
+    // 2b. Smooth Anchor Click Handler using Lenis Engine
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+                e.preventDefault();
+                if (window.lenis) {
+                    window.lenis.scrollTo(targetEl, { duration: 1.2 });
+                } else {
+                    targetEl.scrollIntoView({ behavior: 'smooth' });
+                }
+                const cleanId = targetId.replace('#', '');
+                const mappedId = sectionNavMap[cleanId] || cleanId;
+                desktopLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${mappedId}`));
+                mobileLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${mappedId}`));
+            }
+        });
+    });
 });
 
 // 3. Mobile Responsive Slide-out Navigation Drawer Toggle

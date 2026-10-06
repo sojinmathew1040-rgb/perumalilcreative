@@ -145,6 +145,7 @@ foreach ($redundant_files as $file) {
             <a href="#services" class="mobile-nav-link" onclick="toggleMenu()">Services</a>
             <a href="#portfolio" class="mobile-nav-link" onclick="toggleMenu()">Portfolio</a>
             <a href="#about" class="mobile-nav-link" onclick="toggleMenu()">About</a>
+            <a href="#faq" class="mobile-nav-link" onclick="toggleMenu()">FAQs</a>
             <a href="#contact" class="mobile-nav-link" onclick="toggleMenu()">Contact</a>
         </div>
     </div>

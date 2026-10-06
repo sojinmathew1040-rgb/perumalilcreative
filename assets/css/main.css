@@ -272,11 +272,13 @@ body {
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
+    box-shadow: 0 0 8px var(--accent);
 }
 
 .nav-link.active {
     color: var(--accent) !important;
     font-weight: 600;
+    text-shadow: 0 0 12px var(--accent-glow);
 }
 
 /* Premium Magnetic Button Utility */
@@ -377,10 +379,13 @@ body {
     font-size: 8vw;
     font-weight: 800;
     color: var(--text-primary);
+    transition: color 0.3s ease, padding-left 0.3s ease;
 }
 
-.mobile-nav-link:hover {
-    color: var(--accent);
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+    color: var(--accent) !important;
+    padding-left: 10px;
 }
 
 /* 7. Hero Section Layout */
@@ -1542,8 +1547,21 @@ body {
     width: 100%;
     overflow: hidden;
     display: flex;
-    padding: 30px 0;
+    padding: 40px 0;
     perspective: 1000px;
+}
+
+.intro-logo-marquee::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 120px;
+    background: radial-gradient(ellipse at center, rgba(0, 102, 255, 0.1) 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .marquee-fade-left {
@@ -1583,34 +1601,43 @@ body {
     height: 120px;
     min-width: 240px;
     padding: 20px 45px;
-    background: rgba(12, 13, 18, 0.6);
+    background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 20px;
-    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    transition: background 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
     flex-shrink: 0;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.02);
     transform-style: preserve-3d;
 }
 
 .logo-item-wrapper:hover {
-    background: rgba(20, 22, 31, 0.85);
-    border-color: rgba(0, 102, 255, 0.4);
-    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.96);
+    border-color: var(--accent);
+    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    transform: translateY(-8px) scale(1.04);
 }
 
 .marquee-logo-img {
     max-height: 62px;
     max-width: 150px;
     object-fit: contain;
-    filter: grayscale(1) opacity(0.55) brightness(0.7) contrast(1.05);
-    transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s ease;
+    filter: grayscale(100%);
+    opacity: 0.75;
+    transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.4s ease;
 }
 
 .logo-item-wrapper:hover .marquee-logo-img {
-    filter: grayscale(0) opacity(1) brightness(1.1) contrast(1.1) drop-shadow(0 0 12px rgba(0, 102, 255, 0.2));
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
 }
 
 /* 9. Services & Packages Section */

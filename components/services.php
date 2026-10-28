@@ -35,7 +35,7 @@
 
     <!-- Pricing Section Header -->
     <div class="packages-header">
-        <span class="intro-tagline" style="margin-bottom: 15px;">Pricing Plans</span>
+        <span class="intro-tagline services-pricing-tagline">Pricing Plans</span>
         <h2 class="packages-title">Simple, Transparent <span class="text-glow">Pricing</span></h2>
     </div>
 
@@ -54,10 +54,17 @@
                     <div class="pricing-card-top">
                         <h3 class="pricing-card-name"><?php echo htmlspecialchars($package['name']); ?></h3>
                         <div class="pricing-card-price-label"><?php echo htmlspecialchars($package['price_label']); ?></div>
-                        <div class="pricing-card-price">&#8377;<?php echo htmlspecialchars($package['price']); ?></div>
+                        <?php
+                        $cleanPrice = str_ireplace(['&#8377;', '₹', 'rs.', 'inr'], '', $package['price']);
+                        $cleanPrice = trim($cleanPrice);
+                        ?>
+                        <div class="pricing-card-price">&#8377;<?php echo htmlspecialchars($cleanPrice); ?></div>
                         <ul class="pricing-card-features">
-                            <?php foreach ($features as $feature): if (trim($feature) === '') continue; ?>
-                                <li><i data-lucide="check" class="feature-check-icon"></i><?php echo htmlspecialchars($feature); ?></li>
+                            <?php foreach ($features as $feature): 
+                                if (trim($feature) === '') continue; 
+                                $renderedFeature = html_entity_decode($feature, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                            ?>
+                                <li><i data-lucide="check" class="feature-check-icon"></i><?php echo htmlspecialchars($renderedFeature, ENT_NOQUOTES, 'UTF-8'); ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>

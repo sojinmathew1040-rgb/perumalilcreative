@@ -152,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
             gsap.set('.typo-line', { opacity: 0, y: 100, scale: 0.95 });
             gsap.set('.floating-media-card', { opacity: 0, scale: 0.85, y: 50 });
             gsap.set('.hud-location-badge', { opacity: 0, scale: 0.9 });
+            gsap.set('.hero-brand-headline', { opacity: 0, y: 25 });
             gsap.set('.studio-mission-text', { opacity: 0, y: 20 });
-            gsap.set('.hero-cta-group .magnetic-btn', { opacity: 0, y: 20 });
             gsap.set('.telemetry-coordinates', { opacity: 0, y: 15 });
             gsap.set('.navbar', { y: -30, opacity: 0 });
 
@@ -163,19 +163,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     opacity: 1,
                     y: 0,
                     scale: 1,
-                    duration: 1.5,
+                    duration: 1.2,
                     stagger: 0.18,
                     ease: 'power4.out',
                     onComplete: () => {
-                        // Drop background typo to their clean low-contrast states
-                        gsap.to('.typo-line:not(.outline-text)', { opacity: 0.05, duration: 1.0 });
-                        gsap.to('.typo-line.outline-text', { opacity: 0.12, duration: 1.0 });
+                        // Keep marquee typography permanently bright and crisp at 100% opacity
+                        gsap.set('.typo-line', { opacity: 1 });
                     }
                 }, '-=0.4')
                 .to('.floating-media-card', { opacity: 1, scale: 1, y: 0, duration: 1.5, stagger: 0.15, ease: 'power3.out' }, '-=1.2')
                 .to('.hud-location-badge', { opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out' }, '-=1.0')
+                .to('.hero-brand-headline', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.9')
                 .to('.studio-mission-text', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.8')
-                .to('.hero-cta-group .magnetic-btn', { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'power3.out' }, '-=0.6')
                 .to('.telemetry-coordinates', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.6');
 
             // 1. Cursor Spotlight Tracking Logic
@@ -373,39 +372,69 @@ document.addEventListener('DOMContentLoaded', () => {
             delay: 0.2
         });
 
-        // E. Brand Logo Marquee scroll velocity engine & hover-pause pipeline
-        const logoTrack = document.getElementById('logoMarqueeTrack');
-        if (logoTrack) {
-            let isMarqueeHovered = false;
+        // E. Brand Logo Marquee scroll velocity engine & dual-track hover-pause pipeline
+        const logoTrack1 = document.getElementById('logoMarqueeTrack1');
+        const logoTrack2 = document.getElementById('logoMarqueeTrack2');
+        const legacyLogoTrack = document.getElementById('logoMarqueeTrack');
 
-            // Smoothly animate the marquee scrolling from right to left
-            let marqueeAnim = gsap.to(logoTrack, {
+        const activeMarqueeAnims = [];
+        let isMarqueeHovered = false;
+
+        if (logoTrack1) {
+            let anim1 = gsap.to(logoTrack1, {
                 xPercent: -50,
                 ease: 'none',
-                duration: 35, // Slow, elegant speed
+                duration: 32, // Smooth, elegant speed
                 repeat: -1
             });
+            activeMarqueeAnims.push(anim1);
 
-            // Decelerate and pause marquee smoothly on hover so partners can be hovered/clicked
-            logoTrack.addEventListener('mouseenter', () => {
-                isMarqueeHovered = true;
-                gsap.to(marqueeAnim, {
-                    timeScale: 0,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                });
+            logoTrack1.addEventListener('mouseenter', () => pauseAllMarquees());
+            logoTrack1.addEventListener('mouseleave', () => resumeAllMarquees());
+        }
+
+        if (logoTrack2) {
+            // Animate row 2 from -50% to 0% (moving rightwards)
+            gsap.set(logoTrack2, { xPercent: -50 });
+            let anim2 = gsap.to(logoTrack2, {
+                xPercent: 0,
+                ease: 'none',
+                duration: 38, // Slightly different speed for visual harmony
+                repeat: -1
             });
+            activeMarqueeAnims.push(anim2);
 
-            // Accelerate and resume marquee smoothly on mouse leave
-            logoTrack.addEventListener('mouseleave', () => {
-                isMarqueeHovered = false;
-                gsap.to(marqueeAnim, {
-                    timeScale: 1,
-                    duration: 0.8,
-                    ease: 'power2.out'
-                });
+            logoTrack2.addEventListener('mouseenter', () => pauseAllMarquees());
+            logoTrack2.addEventListener('mouseleave', () => resumeAllMarquees());
+        }
+
+        if (legacyLogoTrack && !logoTrack1) {
+            let legacyAnim = gsap.to(legacyLogoTrack, {
+                xPercent: -50,
+                ease: 'none',
+                duration: 35,
+                repeat: -1
             });
+            activeMarqueeAnims.push(legacyAnim);
+            legacyLogoTrack.addEventListener('mouseenter', () => pauseAllMarquees());
+            legacyLogoTrack.addEventListener('mouseleave', () => resumeAllMarquees());
+        }
 
+        function pauseAllMarquees() {
+            isMarqueeHovered = true;
+            activeMarqueeAnims.forEach(anim => {
+                gsap.to(anim, { timeScale: 0, duration: 0.7, ease: 'power2.out' });
+            });
+        }
+
+        function resumeAllMarquees() {
+            isMarqueeHovered = false;
+            activeMarqueeAnims.forEach(anim => {
+                gsap.to(anim, { timeScale: 1, duration: 0.7, ease: 'power2.out' });
+            });
+        }
+
+        if (activeMarqueeAnims.length > 0) {
             // Adjust speed dynamically using ScrollTrigger based on scroll velocity (only if not hovered)
             ScrollTrigger.create({
                 trigger: '#intro',
@@ -414,12 +443,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 onUpdate: (self) => {
                     if (isMarqueeHovered) return; // Prevent scroll overrides during active hovers
                     let velocity = Math.abs(self.getVelocity() / 150); // Normalize velocity
-                    let targetScale = 1 + Math.min(velocity, 3.5); // Speed multiplier limit
+                    let targetScale = 1 + Math.min(velocity, 3.0); // Speed multiplier limit
 
-                    gsap.to(marqueeAnim, {
-                        timeScale: targetScale,
-                        duration: 0.4,
-                        ease: 'power2.out'
+                    activeMarqueeAnims.forEach(anim => {
+                        gsap.to(anim, {
+                            timeScale: targetScale,
+                            duration: 0.4,
+                            ease: 'power2.out'
+                        });
                     });
                 }
             });
@@ -441,15 +472,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     ease: 'power3.out',
                     scrollTrigger: {
                         trigger: heading,
-                        start: 'top 85%',
-                        end: 'bottom 15%',
-                        toggleActions: 'play reverse play reverse'
+                        start: 'top 88%',
+                        toggleActions: 'play none none none',
+                        once: true
                     }
                 });
             }
         });
 
-        // F2. Curtain Clip-Path Masking for Paragraphs, Labels, and Standalone text
+        // F2. Curtain Masking for Paragraphs, Labels, and Standalone text
         const curtainTexts = document.querySelectorAll('section:not(#hero) p, section:not(#hero) blockquote, section:not(#hero) .section-label, section:not(#hero) li');
 
         curtainTexts.forEach(el => {
@@ -465,20 +496,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             gsap.fromTo(el, {
-                clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)',
-                y: 15,
-                opacity: 0.8
+                y: 18,
+                opacity: 0
             }, {
-                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                 y: 0,
                 opacity: 1,
                 duration: 0.8,
                 ease: 'power2.out',
                 scrollTrigger: {
                     trigger: el,
-                    start: 'top 85%',
-                    end: 'bottom 15%',
-                    toggleActions: 'play reverse play reverse'
+                    start: 'top 88%',
+                    toggleActions: 'play none none none',
+                    once: true
                 }
             });
         });
@@ -555,16 +584,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // D. Awwwards Stacking Cards Scrolling Effect (Dynamic Scroll-to-Grow & Stack-Shrink)
+        // D. Awwwards Stacking Cards Scrolling Effect (Clean Solitary Pinning & Fade-Out)
         let activePortfolioTriggers = [];
 
         function clearPortfolioTriggers() {
             activePortfolioTriggers.forEach(trigger => {
                 if (trigger) {
                     if (typeof trigger.kill === 'function') {
-                        trigger.kill(true); // Reverts styling to original CSS
+                        trigger.kill();
                     } else if (typeof trigger.revert === 'function') {
-                        trigger.revert(); // Reverts matchMedia contexts
+                        trigger.revert();
                     }
                 }
             });
@@ -585,67 +614,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Desktop & Tablet (viewport >= 992px)
             mm.add("(min-width: 992px)", () => {
-                cards.forEach((card, index) => {
-                    // Stacking layout config: sticky placement with 100px baseline (80px header + 20px breathing margin)
-                    const stickyTopPx = 100;
-                    const offsetPx = index * 32;
+                const stickyTopPx = 100;
 
-                    // Dynamically set sticky variables so it scales for any number of cards
+                cards.forEach((card, index) => {
+                    // Position all cards to pin at the clean, consistent sticky top
                     card.style.position = 'sticky';
-                    card.style.top = `${stickyTopPx + offsetPx}px`;
-                    card.style.transformOrigin = 'center top';
+                    card.style.top = `${stickyTopPx}px`;
+                    card.style.transformOrigin = 'center center';
                     card.style.zIndex = index + 1;
 
-                    // Define helper for getting exact pixel offset of stickiness
-                    const getStickyTopPx = () => stickyTopPx + offsetPx;
-
-                    // 1. Entrance Scroll-to-Grow Parallax: scales the card UP as it scrolls into center sticky position
-                    const entranceTween = gsap.fromTo(card, {
-                        scale: 0.9,
-                        opacity: 0.6,
-                        y: 50
-                    }, {
-                        scale: 1.0,
-                        opacity: 1.0,
+                    // Ensure crisp, solid initial state
+                    gsap.set(card, {
+                        scale: 1,
+                        opacity: 1,
+                        filter: 'blur(0px)',
                         y: 0,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top 95%", // Starts as card enters from viewport bottom
-                            end: () => `top ${getStickyTopPx()}px`, // Ends exactly when it locks into its sticky top offset
-                            scrub: true,
-                            invalidateOnRefresh: true
-                        }
+                        visibility: 'visible',
+                        pointerEvents: 'auto'
                     });
 
-                    if (entranceTween.scrollTrigger) {
-                        activePortfolioTriggers.push(entranceTween.scrollTrigger);
-                    }
-
-                    // 2. Pinned Cards Shrink & Recess Effect: scales card down as later cards stack on top
+                    // For every card except the last: when the NEXT card scrolls up into view,
+                    // smoothly fade out and scale down THIS card so it NEVER shows behind the next card!
                     if (index < cards.length - 1) {
-                        const lastIndex = cards.length - 1;
-                        const lastOffsetPx = lastIndex * 32;
-                        const getLastStickyTopPx = () => stickyTopPx + lastOffsetPx;
+                        const nextCard = cards[index + 1];
 
-                        const stepsFromLast = cards.length - 1 - index;
-                        const targetScale = 1.0 - stepsFromLast * 0.04; // e.g. 0.96, 0.92, 0.88
-                        const targetOpacity = 1.0 - stepsFromLast * 0.15; // e.g. 0.85, 0.70, 0.55
-
-                        const shrinkTween = gsap.to(card, {
-                            scale: targetScale,
-                            opacity: targetOpacity,
-                            y: -offsetPx * 0.5, // Shift up slightly to compress stack depth visually
-                            ease: 'none',
-                            scrollTrigger: {
-                                trigger: card,
-                                start: () => `top ${getStickyTopPx()}px`, // Starts when card pins
-                                endTrigger: cards[cards.length - 1],
-                                end: () => `top ${getLastStickyTopPx()}px`, // Ends when the last card pins
-                                scrub: true,
-                                invalidateOnRefresh: true
+                        const shrinkTween = gsap.fromTo(card, 
+                            {
+                                scale: 1.0,
+                                opacity: 1.0,
+                                filter: 'blur(0px)'
+                            },
+                            {
+                                scale: 0.94,
+                                opacity: 0.0,
+                                filter: 'blur(6px)',
+                                ease: 'power1.out',
+                                scrollTrigger: {
+                                    trigger: nextCard,
+                                    start: "top 80%", // As next card approaches from below
+                                    end: `top ${stickyTopPx}px`, // Exactly when next card reaches sticky top
+                                    scrub: 0.5,
+                                    invalidateOnRefresh: true,
+                                    onUpdate: (self) => {
+                                        // Once covered, ensure complete cutoff so behind card is never visible
+                                        if (self.progress >= 0.96) {
+                                            card.style.visibility = 'hidden';
+                                            card.style.pointerEvents = 'none';
+                                        } else {
+                                            card.style.visibility = 'visible';
+                                            card.style.pointerEvents = 'auto';
+                                        }
+                                    }
+                                }
                             }
-                        });
+                        );
 
                         if (shrinkTween.scrollTrigger) {
                             activePortfolioTriggers.push(shrinkTween.scrollTrigger);
@@ -656,12 +678,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Mobile (viewport < 992px)
             mm.add("(max-width: 991px)", () => {
-                // Remove all inline overrides to let css rules govern standard list flow
                 cards.forEach(card => {
                     gsap.set(card, { clearProps: "all" });
                     card.style.position = 'relative';
                     card.style.top = '0';
                     card.style.transformOrigin = 'center center';
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
+                    card.style.filter = 'none';
+                    card.style.pointerEvents = 'auto';
                 });
             });
 
@@ -669,8 +694,13 @@ document.addEventListener('DOMContentLoaded', () => {
             activePortfolioTriggers.push(mm);
         }
 
-        // Initialize stacking card effects for active Video stack
-        initStackingCardsEffect('#portfolioStackVideo');
+        // Initialize stacking card effects for initially active stack
+        const initialActiveStack = document.querySelector('.portfolio-stack.active') || document.querySelector('.portfolio-stack');
+        if (initialActiveStack && initialActiveStack.id) {
+            initStackingCardsEffect('#' + initialActiveStack.id);
+        } else {
+            initStackingCardsEffect('#portfolioStackWeb');
+        }
 
         // E. Portfolio Tab Switching Architecture (Global window handle)
         window.switchPortfolioTab = function (tabKey) {
@@ -682,6 +712,18 @@ document.addEventListener('DOMContentLoaded', () => {
             tabButtons.forEach(btn => btn.classList.remove('active'));
             activeTabBtn.classList.add('active');
 
+            // If user has scrolled deep into the portfolio deck, smoothly scroll up to showcase header
+            const portfolioSec = document.getElementById('portfolio');
+            if (portfolioSec) {
+                const rect = portfolioSec.getBoundingClientRect();
+                if (rect.top < 30) {
+                    window.scrollTo({
+                        top: portfolioSec.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
             // 2. Identify stacks
             const currentStack = document.querySelector('.portfolio-stack.active');
             let targetStackId = '';
@@ -691,8 +733,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetStackId = 'portfolioStackWeb';
             } else if (tabKey === 'design') {
                 targetStackId = 'portfolioStackDesign';
+            } else {
+                targetStackId = 'portfolioStack_' + tabKey.replace(/[^a-zA-Z0-9_]/g, '_');
             }
-            const targetStack = document.getElementById(targetStackId);
+            const targetStack = document.getElementById(targetStackId) || document.querySelector(`.portfolio-stack[data-category="${tabKey}"]`);
 
             if (currentStack && targetStack) {
                 // Kill and clear existing stacking triggers before transition
@@ -702,19 +746,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 gsap.to(currentStack, {
                     opacity: 0,
                     y: 20,
-                    duration: 0.4,
+                    duration: 0.35,
                     ease: 'power2.in',
                     onComplete: () => {
                         currentStack.classList.remove('active');
                         currentStack.style.display = 'none';
 
+                        // Reset all cards in targetStack to initial state
+                        const targetCards = targetStack.querySelectorAll('.portfolio-stack-card');
+                        targetCards.forEach(c => {
+                            gsap.set(c, { clearProps: 'opacity,transform,filter,visibility' });
+                            c.style.visibility = 'visible';
+                            c.style.pointerEvents = 'auto';
+                        });
+
                         // Position and activate the target stack in document flow before fading in
-                        targetStack.style.display = 'block'; // Set to block layout
+                        targetStack.style.display = 'block';
                         targetStack.classList.add('active');
 
-                        // Initialize new stack triggers immediately so offsets are calculated correctly
-                        initStackingCardsEffect('#' + targetStackId);
+                        // Initialize new stack triggers immediately
+                        if (targetStack.id) {
+                            initStackingCardsEffect('#' + targetStack.id);
+                        }
                         ScrollTrigger.refresh();
+
+                        // Re-render Lucide icons if loaded
+                        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                            lucide.createIcons();
+                        }
 
                         // Fade in target stack cleanly
                         gsap.fromTo(targetStack, {
@@ -723,13 +782,155 @@ document.addEventListener('DOMContentLoaded', () => {
                         }, {
                             opacity: 1,
                             y: 0,
-                            duration: 0.6,
+                            duration: 0.5,
                             ease: 'power2.out'
                         });
                     }
                 });
             }
         };
+
+        // F. Luxury 80% Screen "Launching Soon" Template Display Modal Controller
+        window.openLaunchingSoonModal = function (cardElem, e) {
+            if (e) {
+                if (typeof e.preventDefault === 'function') e.preventDefault();
+                if (typeof e.stopPropagation === 'function') e.stopPropagation();
+            }
+            const modal = document.getElementById('launchingSoonModal');
+            if (!modal) return;
+
+            const title = cardElem ? (cardElem.getAttribute('data-title') || 'Exclusive Project') : 'Exclusive Project';
+            const tag = cardElem ? (cardElem.getAttribute('data-tag') || 'Web Development') : 'Web Development';
+            const desc = cardElem ? (cardElem.getAttribute('data-description') || '') : '';
+            const templateImg = cardElem ? (cardElem.getAttribute('data-template-image') || cardElem.getAttribute('data-image') || 'assets/images/portfolio_launching_soon.jpg') : 'assets/images/portfolio_launching_soon.jpg';
+
+            // Populate dynamic attributes
+            const titleEl = document.getElementById('lsModalTitle');
+            if (titleEl) titleEl.textContent = title;
+
+            const tagEl = document.getElementById('lsModalTag');
+            if (tagEl) tagEl.textContent = tag;
+
+            const descEl = document.getElementById('lsModalDesc');
+            if (descEl) {
+                descEl.textContent = desc.trim() || 'This digital platform is currently in active engineering. Revealing the future soon.';
+            }
+
+            const imageEl = document.getElementById('lsModalImage');
+            if (imageEl) {
+                imageEl.src = templateImg;
+                imageEl.alt = title + ' - Launching Soon';
+            }
+
+            const ambientEl = document.getElementById('lsModalAmbient');
+            if (ambientEl) {
+                ambientEl.style.backgroundImage = 'url("' + templateImg + '")';
+            }
+
+            // Halt smooth scroll momentum so modal remains pinned
+            if (window.lenis && typeof window.lenis.stop === 'function') {
+                window.lenis.stop();
+            }
+            document.body.style.overflow = 'hidden';
+
+            // Reveal modal
+            modal.classList.add('active');
+            modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
+
+            const modalCard = modal.querySelector('.launching-soon-modal-card');
+
+            if (typeof gsap !== 'undefined') {
+                gsap.fromTo(modal, 
+                    { opacity: 0 }, 
+                    { opacity: 1, duration: 0.3, ease: 'power2.out' }
+                );
+
+                if (modalCard) {
+                    gsap.fromTo(modalCard, 
+                        { scale: 0.88, y: 30, opacity: 0 }, 
+                        { scale: 1, y: 0, opacity: 1, duration: 0.4, ease: 'back.out(1.15)' }
+                    );
+                }
+            } else {
+                modal.style.opacity = '1';
+                if (modalCard) {
+                    modalCard.style.transform = 'scale(1) translateY(0)';
+                    modalCard.style.opacity = '1';
+                }
+            }
+        };
+
+        window.handlePortfolioCardClick = function (cardElem, e) {
+            window.openLaunchingSoonModal(cardElem, e);
+        };
+
+        window.closeLaunchingSoonModal = function () {
+            const modal = document.getElementById('launchingSoonModal');
+            if (!modal) return;
+
+            // Immediately restore page scroll
+            document.body.style.overflow = '';
+            if (window.lenis && typeof window.lenis.start === 'function') {
+                window.lenis.start();
+            }
+
+            const modalCard = modal.querySelector('.launching-soon-modal-card');
+            if (modalCard && typeof gsap !== 'undefined') {
+                gsap.to(modalCard, { scale: 0.94, y: 15, opacity: 0, duration: 0.22, ease: 'power2.in' });
+            }
+
+            if (typeof gsap !== 'undefined') {
+                gsap.to(modal, {
+                    opacity: 0,
+                    duration: 0.22,
+                    ease: 'power2.in',
+                    onComplete: () => {
+                        modal.classList.remove('active');
+                        modal.style.display = 'none';
+                        modal.setAttribute('aria-hidden', 'true');
+                    }
+                });
+                setTimeout(() => {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                }, 250);
+            } else {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+            }
+        };
+
+        // Guaranteed Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                window.closeLaunchingSoonModal();
+            }
+        });
+
+        // Guaranteed Backdrop & Close Button Direct Click Dispatcher
+        document.addEventListener('click', (e) => {
+            const modal = document.getElementById('launchingSoonModal');
+            if (!modal || modal.style.display === 'none' || !modal.classList.contains('active')) return;
+
+            if (e.target === modal || e.target.closest('#lsCloseBtn') || e.target.closest('.modal-close-btn') || e.target.closest('.ls-btn-close-text')) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.closeLaunchingSoonModal();
+            }
+        });
+
+        // Delegate click handler strictly for cards with data-is-launching-soon="1"
+        document.addEventListener('click', (e) => {
+            const launchingCard = e.target.closest('.portfolio-stack-card');
+            if (launchingCard && launchingCard.getAttribute('data-is-launching-soon') === '1' && !e.target.closest('.launching-soon-modal-card')) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.openLaunchingSoonModal(launchingCard, e);
+            }
+        });
 
         // Bind interactive 3D Tilts to intro pillars, services, portfolio stack, pricing plan cards, and brand logos
         bindLuxuryTiltEffect('.pricing-card', 8, 0.05);
@@ -758,35 +959,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // F. Location Card and Map Reveal Animations
         if (document.querySelector('.location-section')) {
+            const isMobile = window.innerWidth <= 768;
             gsap.fromTo('.location-card', {
-                x: -50,
+                y: isMobile ? 30 : 0,
+                x: isMobile ? 0 : -50,
                 opacity: 0
             }, {
+                y: 0,
                 x: 0,
                 opacity: 1,
-                duration: 1.2,
+                duration: 1.0,
                 ease: 'power3.out',
                 scrollTrigger: {
                     trigger: '.location-section',
                     start: 'top 85%',
-                    end: 'bottom 15%',
-                    toggleActions: 'play reverse play reverse'
+                    toggleActions: 'play none none none',
+                    once: true
                 }
             });
 
             gsap.fromTo('.location-map-frame', {
-                x: 50,
+                y: isMobile ? 30 : 0,
+                x: isMobile ? 0 : 50,
                 opacity: 0
             }, {
+                y: 0,
                 x: 0,
                 opacity: 1,
-                duration: 1.2,
+                duration: 1.0,
                 ease: 'power3.out',
                 scrollTrigger: {
                     trigger: '.location-section',
                     start: 'top 85%',
-                    end: 'bottom 15%',
-                    toggleActions: 'play reverse play reverse'
+                    toggleActions: 'play none none none',
+                    once: true
                 }
             });
         }
@@ -796,16 +1002,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mapContainer && typeof L !== 'undefined') {
             const lat = parseFloat(mapContainer.getAttribute('data-lat')) || 9.9487;
             const lng = parseFloat(mapContainer.getAttribute('data-lng')) || 76.6294;
+            const isMobile = window.innerWidth <= 768;
             const officeCoords = [lat, lng];
+            // On mobile, offset center slightly south so the marker displays cleanly above the bottom HUD card
+            const displayCenter = isMobile ? [lat - 0.0016, lng] : officeCoords;
 
             // Initialize the map centered on Vazhakulam, Kerala
             const map = L.map('officeMap', {
-                center: officeCoords,
+                center: displayCenter,
                 zoom: 15,
                 scrollWheelZoom: false,
                 zoomControl: false,
-                dragging: !L.Browser.mobile,
-                tap: !L.Browser.mobile
+                dragging: true,
+                tap: true
             });
 
             // Add tile layer
@@ -860,56 +1069,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 6. Magnetic Button Physics Engine
-    const magneticBtns = document.querySelectorAll('.magnetic-btn');
-    magneticBtns.forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const bound = btn.getBoundingClientRect();
+    // 6. Magnetic Button Physics Engine (Desktop fine pointer only)
+    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (canHover) {
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const bound = btn.getBoundingClientRect();
 
-            // Mouse distance relative to button center
-            const x = e.clientX - (bound.left + bound.width / 2);
-            const y = e.clientY - (bound.top + bound.height / 2);
+                // Mouse distance relative to button center
+                const x = e.clientX - (bound.left + bound.width / 2);
+                const y = e.clientY - (bound.top + bound.height / 2);
 
-            // Premium smooth magnetic drag
-            gsap.to(btn, {
-                x: x * 0.35,
-                y: y * 0.35,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-
-            // Move inside text slightly less to create 3D depth overlay
-            const inner = btn.querySelector('span');
-            if (inner) {
-                gsap.to(inner, {
-                    x: x * 0.18,
-                    y: y * 0.18,
+                // Premium smooth magnetic drag
+                gsap.to(btn, {
+                    x: x * 0.35,
+                    y: y * 0.35,
                     duration: 0.3,
                     ease: 'power2.out'
                 });
-            }
-        });
 
-        btn.addEventListener('mouseleave', () => {
-            // Restore to normal coordinates smoothly
-            gsap.to(btn, {
-                x: 0,
-                y: 0,
-                duration: 0.5,
-                ease: 'elastic.out(1, 0.4)'
+                // Move inside text slightly less to create 3D depth overlay
+                const inner = btn.querySelector('span');
+                if (inner) {
+                    gsap.to(inner, {
+                        x: x * 0.18,
+                        y: y * 0.18,
+                        duration: 0.3,
+                        ease: 'power2.out'
+                    });
+                }
             });
 
-            const inner = btn.querySelector('span');
-            if (inner) {
-                gsap.to(inner, {
+            btn.addEventListener('mouseleave', () => {
+                // Restore to normal coordinates smoothly
+                gsap.to(btn, {
                     x: 0,
                     y: 0,
                     duration: 0.5,
                     ease: 'elastic.out(1, 0.4)'
                 });
-            }
+
+                const inner = btn.querySelector('span');
+                if (inner) {
+                    gsap.to(inner, {
+                        x: 0,
+                        y: 0,
+                        duration: 0.5,
+                        ease: 'elastic.out(1, 0.4)'
+                    });
+                }
+            });
         });
-    });
+    }
 
     // 7. Interactive Accordions (GSAP Heights Toggle)
     const faqItems = document.querySelectorAll('.faq-item');

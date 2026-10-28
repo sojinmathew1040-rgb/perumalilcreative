@@ -5,7 +5,7 @@
             <div class="section-label">Get In Touch</div>
                         <h2 class="contact-headline"><?php echo $settings['contact_headline'] ?? 'Let\'s build<br>something<br>enduring'; ?></h2>
 
-            <p style="margin-top: 30px; max-width: 320px;">
+            <p class="contact-desc-text">
                 <?php echo htmlspecialchars($settings['contact_desc'] ?? 'Ready to elevate your digital footprint? Send us your blueprint or select an agency package below.'); ?>
             </p>
 
@@ -142,7 +142,7 @@
                 </div>
 
                 <!-- Submission Error Alert Banner -->
-                <div id="formError" style="display: none; align-items: center; gap: 8px; color: #ef4444; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem;">
+                <div id="formError" class="contact-form-error-banner">
                     <i data-lucide="alert-octagon" size="18"></i>
                     <span class="error-msg"></span>
                 </div>
@@ -158,12 +158,12 @@
                 <div class="success-icon">
                     <i data-lucide="check" size="32"></i>
                 </div>
-                <h3 style="font-family: var(--font-heading); font-size: 2rem;">Blueprint Initiated</h3>
-                <p style="max-width: 400px; color: var(--text-secondary);">
+                <h3 class="contact-success-title">Blueprint Initiated</h3>
+                <p class="contact-success-message">
                     Thank you! Our creative director will analyze your package preferences and reach out within 12
                     hours.
                 </p>
-                <button onclick="resetForm()" class="magnetic-btn" style="margin-top: 20px;">
+                <button onclick="resetForm()" class="magnetic-btn contact-reset-button">
                     <span>Submit Another Inquiry</span>
                 </button>
             </div>

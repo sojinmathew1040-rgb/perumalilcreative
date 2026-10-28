@@ -11,7 +11,7 @@ class WebGLBackground {
         this.camera = null;
         this.renderer = null;
         this.particles = null;
-        this.particleCount = 1200; // Optimized count for seamless 60fps
+        this.particleCount = window.innerWidth < 768 ? 500 : 1200; // Optimized count for seamless 60fps
 
         // Mouse interaction vectors
         this.mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
@@ -24,9 +24,17 @@ class WebGLBackground {
     }
 
     init() {
+        // Read dynamic theme background color
+        let parsedBg = 0x050505;
+        try {
+            const rootStyle = getComputedStyle(document.documentElement);
+            const bgDarkHex = (rootStyle.getPropertyValue('--bg-dark') || '#050505').trim();
+            parsedBg = parseInt(bgDarkHex.replace('#', ''), 16) || 0x050505;
+        } catch (e) {}
+
         // Scene setup
         this.scene = new THREE.Scene();
-        this.scene.fog = new THREE.FogExp2(0x050505, 0.0015);
+        this.scene.fog = new THREE.FogExp2(parsedBg, 0.0015);
 
         // Camera setup
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
@@ -41,7 +49,7 @@ class WebGLBackground {
         });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setClearColor(0x050505, 1);
+        this.renderer.setClearColor(parsedBg, 1);
     }
 
     createParticles() {
@@ -75,9 +83,16 @@ class WebGLBackground {
         geometry.setAttribute('initialPosition', new THREE.BufferAttribute(initialPositions, 3));
         geometry.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
 
-        // High-end particles material
+        // High-end particles material with dynamic accent color
+        let parsedAccent = 0x0066ff;
+        try {
+            const rootStyle = getComputedStyle(document.documentElement);
+            const accentHex = (rootStyle.getPropertyValue('--accent') || '#0066ff').trim();
+            parsedAccent = parseInt(accentHex.replace('#', ''), 16) || 0x0066ff;
+        } catch (e) {}
+
         const material = new THREE.PointsMaterial({
-            color: 0x0066ff, // Electric Cobalt Blue
+            color: parsedAccent, // Dynamic Accent Color
             size: 2.2,
             transparent: true,
             opacity: 0.65,
@@ -155,6 +170,26 @@ class WebGLBackground {
 
         this.particles.geometry.attributes.position.needsUpdate = true;
         this.renderer.render(this.scene, this.camera);
+    }
+
+    updateColors(bgColorHex, accentColorHex) {
+        if (bgColorHex && this.scene && this.renderer) {
+            const cleanBg = String(bgColorHex).trim().replace('#', '');
+            const parsedBg = parseInt(cleanBg, 16);
+            if (!isNaN(parsedBg)) {
+                if (this.scene.fog) {
+                    this.scene.fog.color.setHex(parsedBg);
+                }
+                this.renderer.setClearColor(parsedBg, 1);
+            }
+        }
+        if (accentColorHex && this.particles && this.particles.material) {
+            const cleanAccent = String(accentColorHex).trim().replace('#', '');
+            const parsedAccent = parseInt(cleanAccent, 16);
+            if (!isNaN(parsedAccent)) {
+                this.particles.material.color.setHex(parsedAccent);
+            }
+        }
     }
 }
 

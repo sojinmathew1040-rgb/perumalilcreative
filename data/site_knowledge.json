@@ -1,0 +1,1419 @@
+{
+    "generated_at": "2026-10-26T08:53:06+01:00",
+    "db_fingerprint": "75:19:21:6:6:4:4:4:4:5:5:3:22",
+    "total_tables_indexed": 11,
+    "tables_list": [
+        "admin_users",
+        "collaborators",
+        "faq_items",
+        "inquiries",
+        "intro_pillars",
+        "portfolio_categories",
+        "portfolio_items",
+        "pricing_packages",
+        "services",
+        "site_settings",
+        "team_members"
+    ],
+    "table_schemas": {
+        "admin_users": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "username",
+                "type": "varchar(50)",
+                "null": "NO",
+                "key": "UNI",
+                "default": null
+            },
+            {
+                "field": "password_hash",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "created_at",
+                "type": "timestamp",
+                "null": "NO",
+                "key": "",
+                "default": "current_timestamp()"
+            }
+        ],
+        "collaborators": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "name",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "image_path",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ],
+        "faq_items": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "question",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "answer",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ],
+        "inquiries": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "name",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "email",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "package_slug",
+                "type": "varchar(100)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "package_name",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "price",
+                "type": "decimal(10,2)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "message",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "status",
+                "type": "varchar(50)",
+                "null": "YES",
+                "key": "",
+                "default": "New"
+            },
+            {
+                "field": "created_at",
+                "type": "timestamp",
+                "null": "NO",
+                "key": "",
+                "default": "current_timestamp()"
+            }
+        ],
+        "intro_pillars": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "title",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "icon",
+                "type": "varchar(50)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "description",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "delay",
+                "type": "varchar(10)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ],
+        "portfolio_categories": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "slug",
+                "type": "varchar(50)",
+                "null": "NO",
+                "key": "UNI",
+                "default": null
+            },
+            {
+                "field": "name",
+                "type": "varchar(100)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ],
+        "portfolio_items": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "category",
+                "type": "varchar(50)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "tag",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "title",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "description",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "link",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "image_path",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            },
+            {
+                "field": "is_launching_soon",
+                "type": "tinyint(1)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ],
+        "pricing_packages": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "name",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "price_label",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "price",
+                "type": "varchar(50)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "features",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "delay",
+                "type": "varchar(10)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "is_popular",
+                "type": "tinyint(1)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ],
+        "services": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "title",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "icon",
+                "type": "varchar(50)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "description",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "delay",
+                "type": "varchar(10)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ],
+        "site_settings": [
+            {
+                "field": "setting_key",
+                "type": "varchar(100)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "setting_value",
+                "type": "text",
+                "null": "NO",
+                "key": "",
+                "default": null
+            }
+        ],
+        "team_members": [
+            {
+                "field": "id",
+                "type": "int(11)",
+                "null": "NO",
+                "key": "PRI",
+                "default": null
+            },
+            {
+                "field": "name",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "role",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "image_path",
+                "type": "varchar(255)",
+                "null": "NO",
+                "key": "",
+                "default": null
+            },
+            {
+                "field": "order_index",
+                "type": "int(11)",
+                "null": "YES",
+                "key": "",
+                "default": "0"
+            }
+        ]
+    },
+    "table_stats": {
+        "admin_users": 1,
+        "collaborators": 22,
+        "faq_items": 5,
+        "inquiries": 0,
+        "intro_pillars": 3,
+        "portfolio_categories": 3,
+        "portfolio_items": 19,
+        "pricing_packages": 4,
+        "services": 6,
+        "site_settings": 75,
+        "team_members": 4
+    },
+    "entities_count": 88,
+    "studio": {
+        "name": "Perumalil Creative",
+        "tagline": "Design Your Every Occasion.",
+        "mission": "We design premium creative identities, cinematic brand reels, and luxury digital architectures built on strict mathematical grid parameters.",
+        "address": "First Floor, Kaimalayil Plaza, Opposite Viswajyothy College, Avoly P.O., Vazhakulam, Kerala - 686670",
+        "coordinates": "9.9487° N, 76.6294° E",
+        "map_latitude": "9.9487",
+        "map_longitude": "76.6294",
+        "primary_phone": "+91 99460 20716",
+        "secondary_phone": "+91 99460 20724",
+        "email": "hello@perumalilcreative.com",
+        "google_maps": "https://maps.app.goo.gl/sVnxVtQPHHKY5nWz8",
+        "leadership": {
+            "md_name": "Dijo J Perumaly",
+            "md_role": "Managing Director, Perumalil Creative",
+            "quote": "Small businesses are the heart of our communities, built with passion and hard work. We believe every owner deserves the chance to shine online, regardless of their budget. We're here to craft marketing strategies that tell your story and connect you with your customers, helping your dreams grow.",
+            "team_members": [
+                {
+                    "name": "Dijo J Perumaly",
+                    "role": "Managing Director"
+                },
+                {
+                    "name": "Manoj",
+                    "role": "Technical Director"
+                },
+                {
+                    "name": "Sojin",
+                    "role": "Creative Developer"
+                },
+                {
+                    "name": "Sam",
+                    "role": "Creative Designer"
+                }
+            ]
+        },
+        "about_narrative": "Perumalil Creative is a professional advertising, branding, and digital marketing company dedicated to helping businesses grow and stand out. We provide complete solutions including SEO, digital marketing, advertising, website design, and graphic design. We also specialize in creative services like momento design, ID card design, and custom branding materials. Our goal is to build strong brand identity and deliver high-quality creative solutions that drive results.",
+        "philosophy": "We believe that Vazhakulam, Kerala is home to some of the most vibrant local businesses, community organizations, and visual artists. They deserve digital architectures and marketing campaigns that command respect on a global stage.",
+        "vision": "We specialize in high-quality video production for your brand stories and advertising campaigns. Elevate your business with compelling videos that capture attention, convey concepts clearly, and drive results.",
+        "details": {
+            "meticulous_detail": "Meticulous Detail: Whether engineering a custom festival poster, printing event graphics, shooting a single Instagram Reel, or developing high-end layouts, we align every single pixel with surgical accuracy.",
+            "strategic_growth": "Strategic Growth: Aesthetic excellence is only half the battle. We integrate localized SEO architectures, targeted engagement, and strong calls-to-action to ensure your visual assets deliver actual commercial success."
+        }
+    },
+    "site_settings": {
+        "about_detail1_desc": "Whether engineering a custom festival poster, printing event graphics, shooting a single Instagram Reel, or developing high-end layouts, we align every single pixel with surgical accuracy.",
+        "about_detail1_title": "Meticulous Detail",
+        "about_detail2_desc": "Aesthetic excellence is only half the battle. We integrate localized SEO architectures, targeted engagement, and strong calls-to-action to ensure your visual assets deliver actual commercial success.",
+        "about_detail2_title": "Strategic Growth",
+        "about_philosophy_desc": "We believe that Vazhakulam, Kerala is home to some of the most vibrant local businesses, community organizations, and visual artists. They deserve digital architectures and marketing campaigns that command respect on a global stage.",
+        "about_philosophy_tagline": "Our Philosophy",
+        "about_philosophy_title": "Global Standards,<br>Local Heritage",
+        "about_us_desc1": "Perumalil Creative is a professional advertising, branding, and digital marketing company dedicated to helping businesses grow and stand out. We provide complete solutions including SEO, digital marketing, advertising, website design, and graphic design.",
+        "about_us_desc2": "We also specialize in creative services like momento design, ID card design, and custom branding materials. Our goal is to build strong brand identity and deliver high-quality creative solutions that drive results.",
+        "about_us_subtitle": "Perumalil Creative – Your Partner in Digital Growth & Branding",
+        "about_us_tagline": "About Us",
+        "about_us_title": "Your Partner in<br>Digital Growth",
+        "ai_bot_name": "Nova",
+        "ai_enabled": "1",
+        "ai_greeting_desc": "How can I help you today?",
+        "ai_greeting_title": "Hi! I am Nova 👋",
+        "contact_address": "First Floor, Kaimalayil Plaza<br>Opposite Viswajyothy College, Avoly P.O.<br>Vazhakulam, Kerala - 686670",
+        "contact_desc": "Ready to elevate your digital footprint? Send us your blueprint or select an agency package below.",
+        "contact_email": "hello@perumalilcreative.com",
+        "contact_headline": "Let's build<br>something<br>enduring",
+        "contact_phone1": "+91 99460 20716",
+        "contact_phone2": "+91 99460 20724",
+        "footer_copyright": "&copy; 2026 Perumalil Creative. Engineered in Vazhakulam, Kerala. All rights reserved.",
+        "gemini_api_key": "",
+        "hero_color_glow": "#38bdf8",
+        "hero_color_headline": "#ffffff",
+        "hero_color_mission": "#cbd5e1",
+        "hero_coords": "9.9487° N, 76.6294° E",
+        "hero_headline_font": "Syne",
+        "hero_headline_part1": "Design Your",
+        "hero_headline_part2": "Every Occasion.",
+        "hero_marquee_color1": "#10b981",
+        "hero_marquee_color2": "#84cc16",
+        "hero_marquee_color3": "#ffffff",
+        "hero_marquee_color4": "#06b6d4",
+        "hero_marquee_font": "Space Grotesk",
+        "hero_marquee_mode": "words",
+        "hero_marquee_opacity": "0.45",
+        "hero_marquee_row1_style": "filled",
+        "hero_marquee_row1_text": "PERUMALIL CREATIVE • ",
+        "hero_marquee_row2_style": "outline",
+        "hero_marquee_row2_text": "CREATIVE DIRECTION • CINEMATIC PRODUCTION • BRAND ARCHITECTURE • DIGITAL EXPERIENCES • ",
+        "hero_marquee_speed": "90",
+        "hero_mission_text": "We design premium creative identities, cinematic brand reels, and luxury digital architectures built on strict mathematical grid parameters.",
+        "intro_col_left_desc": "We provide SEO, digital marketing, website design, and creative branding solutions to grow your business online.",
+        "intro_col_left_tagline": "Best Digital Marketing Solutions",
+        "intro_col_left_title": "Grow Your Business",
+        "intro_col_right_desc": "We help businesses grow with powerful digital marketing strategies, creative designs, and strong online presence.",
+        "intro_col_right_tagline": "Let's grow your business together",
+        "intro_col_right_title": "Design & Marketing",
+        "intro_vision_tagline": "Our Visual Vision",
+        "intro_vision_text": "We specialize in high-quality video production for your brand stories and advertising campaigns. Elevate your business with compelling videos that capture attention, convey concepts clearly, and drive results.",
+        "intro_vision_title": "Video Wizards<br>Bringing Stories<br>to Life",
+        "launching_soon_template_image": "assets/images/portfolio_launching_soon.jpg",
+        "location_maps_link": "https://maps.app.goo.gl/sVnxVtQPHHKY5nWz8",
+        "map_latitude": "9.9487",
+        "map_longitude": "76.6294",
+        "portfolio_category_order_init": "1",
+        "portfolio_orders_normalized_v1": "1",
+        "seo_description": "Perumalil Creative is a premier digital agency based in Vazhakulam, Kerala. We specialize in digital marketing, high-end graphic design, Instagram Reels production, event branding, and professional web solutions.",
+        "seo_keywords": "Perumalil Creative, Digital Agency Kerala, Marketing Vazhakulam, Graphic Design Vazhakulam, Instagram Reels Kerala, Web Design Kerala, Event Branding Kerala, Parish Visuals Kerala",
+        "seo_title": "Perumalil Creative | Premium Digital Agency in Vazhakulam, Kerala",
+        "site_color_accent": "#0066ff",
+        "site_color_bg": "#000000",
+        "site_color_body": "#a0a0ab",
+        "site_color_card": "#1b0e2f",
+        "site_color_heading": "#ffffff",
+        "site_color_muted": "#64748b",
+        "site_color_subheading": "#38bdf8",
+        "site_font_body": "Plus Jakarta Sans",
+        "site_font_editorial": "Outfit",
+        "site_font_heading": "Syne",
+        "testimonial_author": "Dijo J Perumaly",
+        "testimonial_quote": "Small businesses are the heart of our communities, built with passion and hard work. We believe every owner deserves the chance to shine online, regardless of their budget. We're here to craft marketing strategies that tell your story and connect you with your customers, helping your dreams grow.",
+        "testimonial_role": "Managing Director, Perumalil Creative"
+    },
+    "services": [
+        {
+            "id": 1,
+            "title": "SEO Services",
+            "icon": "search",
+            "description": "Boost your website ranking on search engines and get more organic traffic.",
+            "delay": "0.1",
+            "order_index": 0
+        },
+        {
+            "id": 2,
+            "title": "Digital Marketing",
+            "icon": "globe",
+            "description": "Promote your business through social media, ads, and online campaigns.",
+            "delay": "0.2",
+            "order_index": 1
+        },
+        {
+            "id": 3,
+            "title": "Advertising",
+            "icon": "megaphone",
+            "description": "Creative advertising solutions to promote your brand effectively.",
+            "delay": "0.3",
+            "order_index": 2
+        },
+        {
+            "id": 4,
+            "title": "Website Design",
+            "icon": "laptop",
+            "description": "Professional and responsive websites tailored to your business.",
+            "delay": "0.4",
+            "order_index": 3
+        },
+        {
+            "id": 5,
+            "title": "ID Card Design",
+            "icon": "contact",
+            "description": "Custom ID card designs for companies, schools, and organizations.",
+            "delay": "0.5",
+            "order_index": 4
+        },
+        {
+            "id": 6,
+            "title": "Graphic Design",
+            "icon": "palette",
+            "description": "Creative designs, branding materials, and graphic solutions.",
+            "delay": "0.6",
+            "order_index": 5
+        }
+    ],
+    "pricing_packages": [
+        {
+            "id": 1,
+            "name": "Video Production",
+            "price_label": "Starting From",
+            "price": "5,999",
+            "raw_price": "5,999",
+            "features": [
+                "Professional Cinematic Shoot",
+                "Advanced Editing Included",
+                "4K High Quality Output",
+                "Fast 2–3 Day Delivery"
+            ],
+            "is_popular": true,
+            "order_index": 0
+        },
+        {
+            "id": 2,
+            "name": "Web Development",
+            "price_label": "Starting From",
+            "price": "3,999",
+            "raw_price": "3,999",
+            "features": [
+                "Single Page – ₹3999",
+                "Multi Page – ₹6999",
+                "Dynamic Website – ₹6999+",
+                "Hosting (3GB) – ₹2999",
+                "Domain not included"
+            ],
+            "is_popular": false,
+            "order_index": 1
+        },
+        {
+            "id": 3,
+            "name": "Graphic Design",
+            "price_label": "Starting From",
+            "price": "200",
+            "raw_price": "200",
+            "features": [
+                "Logo Design",
+                "Brochure Design",
+                "Poster Design",
+                "Custom Graphic Work"
+            ],
+            "is_popular": false,
+            "order_index": 2
+        },
+        {
+            "id": 4,
+            "name": "Meta & Google Ads",
+            "price_label": "Starting from ( Monthly )",
+            "price": "2,000",
+            "raw_price": "2,000",
+            "features": [
+                "Strategic Campaign Planning",
+                "Audience Targeting",
+                "Budget Management",
+                "Lead Generation"
+            ],
+            "is_popular": false,
+            "order_index": 3
+        }
+    ],
+    "portfolio": {
+        "design": [
+            {
+                "id": 6,
+                "category": "design",
+                "tag": "Brand Identity & Stationery",
+                "title": "Minimalist Luxury Brand Identity",
+                "description": "Sophisticated stationery system with hot-foil copper stamping on premium textured paper.",
+                "link": "#",
+                "image_path": "assets/images/portfolio_brand.png",
+                "is_launching_soon": false
+            },
+            {
+                "id": 7,
+                "category": "design",
+                "tag": "Editorial Layout Design",
+                "title": "High-End Fashion Magazine Spread",
+                "description": "Minimalist layout design featuring large-format serif typography and dramatic editorial visuals.",
+                "link": "#",
+                "image_path": "assets/images/portfolio_editorial.png",
+                "is_launching_soon": false
+            },
+            {
+                "id": 8,
+                "category": "design",
+                "tag": "Cinematic Poster Design",
+                "title": "Sophisticated Film Key Art",
+                "description": "Dramatic minimalist movie poster composition with bold typographic treatment and artistic grading.",
+                "link": "#",
+                "image_path": "assets/images/portfolio_poster.png",
+                "is_launching_soon": false
+            }
+        ],
+        "video": [
+            {
+                "id": 1,
+                "category": "video",
+                "tag": "Cinematic Event Shoots",
+                "title": "Vazhakulam Parish Easter Celebration",
+                "description": "High-quality color-graded 4K cinematic aftermovie capture.",
+                "link": "https://www.youtube.com/",
+                "image_path": "assets/images/portfolio_festival.png",
+                "is_launching_soon": false
+            },
+            {
+                "id": 2,
+                "category": "video",
+                "tag": "Instagram Reels Promo",
+                "title": "Premium Instagram Reel Package",
+                "description": "Viral short-form media packages driving customer engagement.",
+                "link": "https://www.youtube.com/",
+                "image_path": "assets/images/portfolio_reel.png",
+                "is_launching_soon": false
+            },
+            {
+                "id": 3,
+                "category": "video",
+                "tag": "Corporate Videography",
+                "title": "High-End Corporate Promos",
+                "description": "Capturing brand concepts clearly to drive tangible results.",
+                "link": "https://www.youtube.com/",
+                "image_path": "assets/images/portfolio_marketing.png",
+                "is_launching_soon": false
+            }
+        ],
+        "web": [
+            {
+                "id": 9,
+                "category": "web",
+                "tag": "Luxury Jewellery & E-Commerce Web Architecture",
+                "title": "K.P. Varkey & Sons",
+                "description": "Modern gold & diamond boutique e-commerce web platform engineered with interactive catalogue browsing and luxury aesthetic styling.",
+                "link": "https://kpvarkeyandsons.com/",
+                "image_path": "assets/images/portfolio_kpvarkeyandsons.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 10,
+                "category": "web",
+                "tag": "Fashion, Apparel & Comfort Wear E-Commerce",
+                "title": "Don's Magic",
+                "description": "Modern lifestyle clothing and comfort-wear online store engineered with responsive catalogue browsing, cart workflow, and checkout integration.",
+                "link": "https://donsmagic.com/",
+                "image_path": "assets/images/portfolio_donsmagic.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 11,
+                "category": "web",
+                "tag": "Hyperlocal Multi-Vendor Marketplace",
+                "title": "Ente Angadi",
+                "description": "High-performance digital marketplace connecting regional vendors, community commerce, and customers with seamless cart flow.",
+                "link": "https://enteangadi.com/",
+                "image_path": "assets/images/portfolio_enteangadi.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 12,
+                "category": "web",
+                "tag": "Industrial & Commercial LPG Pipeline Solutions",
+                "title": "National LPG Pipeline Service",
+                "description": "Clean commercial service portal engineered for domestic and industrial gas pipeline installation, safety audits, and rapid quote requests.",
+                "link": "https://lpgpipelineservice.com/",
+                "image_path": "assets/images/portfolio_lpgpipelineservice.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 13,
+                "category": "web",
+                "tag": "Global Education & Overseas Admissions Portal",
+                "title": "GracePath Educational Consultancy",
+                "description": "Sophisticated education and career navigation portal providing student counseling, verified university admissions, and visa guidance workflows.",
+                "link": "https://gracepath.in/",
+                "image_path": "assets/images/portfolio_gracepath.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 14,
+                "category": "web",
+                "tag": "Luxury Hospitality & Resort Estates Showcase",
+                "title": "The K Collection",
+                "description": "Ultra-luxury nature resort architecture featuring K-Mansion, K-Manor, and K-Estates with cinematic visual framing and reservation inquiry workflows.",
+                "link": "https://thekcollection.in/",
+                "image_path": "assets/images/portfolio_thekcollection.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 15,
+                "category": "web",
+                "tag": "Contemporary Visual Arts & Furniture Exhibition",
+                "title": "OXO The Gallery",
+                "description": "Editorial digital exhibition showcase designed with museum-grade typography and contemporary visual framing for curated artistic collections.",
+                "link": "https://oxothegallery.com/",
+                "image_path": "assets/images/portfolio_oxothegallery.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 20,
+                "category": "web",
+                "tag": "Spiritual Centre & Live Streaming Community Portal",
+                "title": "Tabore Prarthanalayam Pala",
+                "description": "Serene community portal featuring retreat schedules, live streaming architectures, prayer request dispatching, and ministry updates.",
+                "link": "https://taborepala.org/",
+                "image_path": "assets/images/portfolio_taborepala.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 21,
+                "category": "web",
+                "tag": "US Mortgage Processing & Corporate Financial Portal",
+                "title": "Principle 1 Professional Services",
+                "description": "Executive professional services website with corporate telemetry, service breakdowns, and strategic consultation booking pipelines.",
+                "link": "https://principle1pro.com/",
+                "image_path": "assets/images/portfolio_principle1pro.jpg",
+                "is_launching_soon": false
+            },
+            {
+                "id": 19,
+                "category": "web",
+                "tag": "Eco-Agri Tourism & Nature Resort",
+                "title": "Food Forest Kanthalloor",
+                "description": "Bespoke nature-stay and eco-resort digital experience currently under active construction, featuring organic apple orchards and highland cottages.",
+                "link": "https://foodforestkanthalloor.com/",
+                "image_path": "assets/images/1792123895_Screenshot 2026-10-16 094056.png",
+                "is_launching_soon": false
+            },
+            {
+                "id": 16,
+                "category": "web",
+                "tag": "Launching Soon • Theatrical & Culinary Arts",
+                "title": "Daba Magic",
+                "description": "Modern digital platform currently in active development. Engineering an enchanting fusion of fine dining and theatrical entertainment.",
+                "link": "https://dabamagic.com/",
+                "image_path": "assets/images/portfolio_launching_soon.jpg",
+                "is_launching_soon": true
+            },
+            {
+                "id": 17,
+                "category": "web",
+                "tag": "Launching Soon • International Healthcare Network",
+                "title": "Health Jobs Global",
+                "description": "Global clinical staffing and medical talent portal currently under active development to connect healthcare professionals across worldwide hospital networks.",
+                "link": "https://healthjobsglobal.com/",
+                "image_path": "assets/images/portfolio_launching_soon.jpg",
+                "is_launching_soon": true
+            },
+            {
+                "id": 18,
+                "category": "web",
+                "tag": "Launching Soon • Pan-India Clinical Staffing",
+                "title": "Health Jobs India",
+                "description": "Targeted healthcare career exchange platform currently in development, dedicated to nationwide clinical recruitment and verified medical staffing.",
+                "link": "https://healthjobsglobal.in/",
+                "image_path": "assets/images/portfolio_launching_soon.jpg",
+                "is_launching_soon": true
+            }
+        ]
+    },
+    "portfolio_flat": [
+        {
+            "id": 6,
+            "category": "design",
+            "tag": "Brand Identity & Stationery",
+            "title": "Minimalist Luxury Brand Identity",
+            "description": "Sophisticated stationery system with hot-foil copper stamping on premium textured paper.",
+            "link": "#",
+            "image_path": "assets/images/portfolio_brand.png",
+            "is_launching_soon": false
+        },
+        {
+            "id": 7,
+            "category": "design",
+            "tag": "Editorial Layout Design",
+            "title": "High-End Fashion Magazine Spread",
+            "description": "Minimalist layout design featuring large-format serif typography and dramatic editorial visuals.",
+            "link": "#",
+            "image_path": "assets/images/portfolio_editorial.png",
+            "is_launching_soon": false
+        },
+        {
+            "id": 8,
+            "category": "design",
+            "tag": "Cinematic Poster Design",
+            "title": "Sophisticated Film Key Art",
+            "description": "Dramatic minimalist movie poster composition with bold typographic treatment and artistic grading.",
+            "link": "#",
+            "image_path": "assets/images/portfolio_poster.png",
+            "is_launching_soon": false
+        },
+        {
+            "id": 1,
+            "category": "video",
+            "tag": "Cinematic Event Shoots",
+            "title": "Vazhakulam Parish Easter Celebration",
+            "description": "High-quality color-graded 4K cinematic aftermovie capture.",
+            "link": "https://www.youtube.com/",
+            "image_path": "assets/images/portfolio_festival.png",
+            "is_launching_soon": false
+        },
+        {
+            "id": 2,
+            "category": "video",
+            "tag": "Instagram Reels Promo",
+            "title": "Premium Instagram Reel Package",
+            "description": "Viral short-form media packages driving customer engagement.",
+            "link": "https://www.youtube.com/",
+            "image_path": "assets/images/portfolio_reel.png",
+            "is_launching_soon": false
+        },
+        {
+            "id": 3,
+            "category": "video",
+            "tag": "Corporate Videography",
+            "title": "High-End Corporate Promos",
+            "description": "Capturing brand concepts clearly to drive tangible results.",
+            "link": "https://www.youtube.com/",
+            "image_path": "assets/images/portfolio_marketing.png",
+            "is_launching_soon": false
+        },
+        {
+            "id": 9,
+            "category": "web",
+            "tag": "Luxury Jewellery & E-Commerce Web Architecture",
+            "title": "K.P. Varkey & Sons",
+            "description": "Modern gold & diamond boutique e-commerce web platform engineered with interactive catalogue browsing and luxury aesthetic styling.",
+            "link": "https://kpvarkeyandsons.com/",
+            "image_path": "assets/images/portfolio_kpvarkeyandsons.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 10,
+            "category": "web",
+            "tag": "Fashion, Apparel & Comfort Wear E-Commerce",
+            "title": "Don's Magic",
+            "description": "Modern lifestyle clothing and comfort-wear online store engineered with responsive catalogue browsing, cart workflow, and checkout integration.",
+            "link": "https://donsmagic.com/",
+            "image_path": "assets/images/portfolio_donsmagic.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 11,
+            "category": "web",
+            "tag": "Hyperlocal Multi-Vendor Marketplace",
+            "title": "Ente Angadi",
+            "description": "High-performance digital marketplace connecting regional vendors, community commerce, and customers with seamless cart flow.",
+            "link": "https://enteangadi.com/",
+            "image_path": "assets/images/portfolio_enteangadi.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 12,
+            "category": "web",
+            "tag": "Industrial & Commercial LPG Pipeline Solutions",
+            "title": "National LPG Pipeline Service",
+            "description": "Clean commercial service portal engineered for domestic and industrial gas pipeline installation, safety audits, and rapid quote requests.",
+            "link": "https://lpgpipelineservice.com/",
+            "image_path": "assets/images/portfolio_lpgpipelineservice.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 13,
+            "category": "web",
+            "tag": "Global Education & Overseas Admissions Portal",
+            "title": "GracePath Educational Consultancy",
+            "description": "Sophisticated education and career navigation portal providing student counseling, verified university admissions, and visa guidance workflows.",
+            "link": "https://gracepath.in/",
+            "image_path": "assets/images/portfolio_gracepath.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 14,
+            "category": "web",
+            "tag": "Luxury Hospitality & Resort Estates Showcase",
+            "title": "The K Collection",
+            "description": "Ultra-luxury nature resort architecture featuring K-Mansion, K-Manor, and K-Estates with cinematic visual framing and reservation inquiry workflows.",
+            "link": "https://thekcollection.in/",
+            "image_path": "assets/images/portfolio_thekcollection.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 15,
+            "category": "web",
+            "tag": "Contemporary Visual Arts & Furniture Exhibition",
+            "title": "OXO The Gallery",
+            "description": "Editorial digital exhibition showcase designed with museum-grade typography and contemporary visual framing for curated artistic collections.",
+            "link": "https://oxothegallery.com/",
+            "image_path": "assets/images/portfolio_oxothegallery.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 20,
+            "category": "web",
+            "tag": "Spiritual Centre & Live Streaming Community Portal",
+            "title": "Tabore Prarthanalayam Pala",
+            "description": "Serene community portal featuring retreat schedules, live streaming architectures, prayer request dispatching, and ministry updates.",
+            "link": "https://taborepala.org/",
+            "image_path": "assets/images/portfolio_taborepala.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 21,
+            "category": "web",
+            "tag": "US Mortgage Processing & Corporate Financial Portal",
+            "title": "Principle 1 Professional Services",
+            "description": "Executive professional services website with corporate telemetry, service breakdowns, and strategic consultation booking pipelines.",
+            "link": "https://principle1pro.com/",
+            "image_path": "assets/images/portfolio_principle1pro.jpg",
+            "is_launching_soon": false
+        },
+        {
+            "id": 19,
+            "category": "web",
+            "tag": "Eco-Agri Tourism & Nature Resort",
+            "title": "Food Forest Kanthalloor",
+            "description": "Bespoke nature-stay and eco-resort digital experience currently under active construction, featuring organic apple orchards and highland cottages.",
+            "link": "https://foodforestkanthalloor.com/",
+            "image_path": "assets/images/1792123895_Screenshot 2026-10-16 094056.png",
+            "is_launching_soon": false
+        },
+        {
+            "id": 16,
+            "category": "web",
+            "tag": "Launching Soon • Theatrical & Culinary Arts",
+            "title": "Daba Magic",
+            "description": "Modern digital platform currently in active development. Engineering an enchanting fusion of fine dining and theatrical entertainment.",
+            "link": "https://dabamagic.com/",
+            "image_path": "assets/images/portfolio_launching_soon.jpg",
+            "is_launching_soon": true
+        },
+        {
+            "id": 17,
+            "category": "web",
+            "tag": "Launching Soon • International Healthcare Network",
+            "title": "Health Jobs Global",
+            "description": "Global clinical staffing and medical talent portal currently under active development to connect healthcare professionals across worldwide hospital networks.",
+            "link": "https://healthjobsglobal.com/",
+            "image_path": "assets/images/portfolio_launching_soon.jpg",
+            "is_launching_soon": true
+        },
+        {
+            "id": 18,
+            "category": "web",
+            "tag": "Launching Soon • Pan-India Clinical Staffing",
+            "title": "Health Jobs India",
+            "description": "Targeted healthcare career exchange platform currently in development, dedicated to nationwide clinical recruitment and verified medical staffing.",
+            "link": "https://healthjobsglobal.in/",
+            "image_path": "assets/images/portfolio_launching_soon.jpg",
+            "is_launching_soon": true
+        }
+    ],
+    "latest_portfolio": [
+        {
+            "id": 21,
+            "category": "web",
+            "tag": "US Mortgage Processing & Corporate Financial Portal",
+            "title": "Principle 1 Professional Services",
+            "description": "Executive professional services website with corporate telemetry, service breakdowns, and strategic consultation booking pipelines.",
+            "link": "https://principle1pro.com/",
+            "image_path": "assets/images/portfolio_principle1pro.jpg",
+            "order_index": 9,
+            "is_launching_soon": 0
+        },
+        {
+            "id": 20,
+            "category": "web",
+            "tag": "Spiritual Centre & Live Streaming Community Portal",
+            "title": "Tabore Prarthanalayam Pala",
+            "description": "Serene community portal featuring retreat schedules, live streaming architectures, prayer request dispatching, and ministry updates.",
+            "link": "https://taborepala.org/",
+            "image_path": "assets/images/portfolio_taborepala.jpg",
+            "order_index": 8,
+            "is_launching_soon": 0
+        },
+        {
+            "id": 19,
+            "category": "web",
+            "tag": "Eco-Agri Tourism & Nature Resort",
+            "title": "Food Forest Kanthalloor",
+            "description": "Bespoke nature-stay and eco-resort digital experience currently under active construction, featuring organic apple orchards and highland cottages.",
+            "link": "https://foodforestkanthalloor.com/",
+            "image_path": "assets/images/1792123895_Screenshot 2026-10-16 094056.png",
+            "order_index": 10,
+            "is_launching_soon": 0
+        },
+        {
+            "id": 18,
+            "category": "web",
+            "tag": "Launching Soon • Pan-India Clinical Staffing",
+            "title": "Health Jobs India",
+            "description": "Targeted healthcare career exchange platform currently in development, dedicated to nationwide clinical recruitment and verified medical staffing.",
+            "link": "https://healthjobsglobal.in/",
+            "image_path": "assets/images/portfolio_launching_soon.jpg",
+            "order_index": 13,
+            "is_launching_soon": 1
+        },
+        {
+            "id": 17,
+            "category": "web",
+            "tag": "Launching Soon • International Healthcare Network",
+            "title": "Health Jobs Global",
+            "description": "Global clinical staffing and medical talent portal currently under active development to connect healthcare professionals across worldwide hospital networks.",
+            "link": "https://healthjobsglobal.com/",
+            "image_path": "assets/images/portfolio_launching_soon.jpg",
+            "order_index": 12,
+            "is_launching_soon": 1
+        }
+    ],
+    "portfolio_categories": [
+        {
+            "id": 2,
+            "slug": "web",
+            "name": "Web Development",
+            "order_index": 0
+        },
+        {
+            "id": 1,
+            "slug": "video",
+            "name": "Video Production",
+            "order_index": 1
+        },
+        {
+            "id": 3,
+            "slug": "design",
+            "name": "Graphic Design",
+            "order_index": 2
+        }
+    ],
+    "team": [
+        {
+            "id": 1,
+            "name": "Dijo J Perumaly",
+            "role": "Managing Director",
+            "image_path": "assets/images/Dijo.gif",
+            "order_index": 0
+        },
+        {
+            "id": 2,
+            "name": "Manoj",
+            "role": "Technical Director",
+            "image_path": "assets/images/manoj.gif",
+            "order_index": 1
+        },
+        {
+            "id": 3,
+            "name": "Sojin",
+            "role": "Creative Developer",
+            "image_path": "assets/images/sojin.gif",
+            "order_index": 2
+        },
+        {
+            "id": 4,
+            "name": "Sam",
+            "role": "Creative Designer",
+            "image_path": "assets/images/sam.jpg",
+            "order_index": 3
+        }
+    ],
+    "faq": [
+        {
+            "id": 1,
+            "question": "How much does a static website cost?",
+            "answer": "The Static Website Development cost varies based on the specific complexity and layout features required by your business. We engineer highly optimized, customized, and lightweight static layout architectures. Contact our team for an exact, tailored pricing blueprint.",
+            "order_index": 0
+        },
+        {
+            "id": 2,
+            "question": "Why does my business need a website and digital marketing?",
+            "answer": "They establish your online credibility, help you reach more local and global customers, and are vital for staying competitive in today's digital landscape. Local businesses that lack proper search positioning lose significant growth opportunities to regional competitors.",
+            "order_index": 1
+        },
+        {
+            "id": 3,
+            "question": "What video and photography services do you offer?",
+            "answer": "We specialize in high-end cinematic promotional videos, continuous social media Reels creation, corporate photography shoots, product visuals, and local event branding coverages designed to capture attention and communicate your brand concept clearly.",
+            "order_index": 2
+        },
+        {
+            "id": 4,
+            "question": "How can SEO improve my website's visibility?",
+            "answer": "SEO optimizes your digital codebase structure, heading levels, and metadata keywords so that search engines like Google rank you higher in organic search results. This directly translates to increased visitors, targeted local business leads, and solid commercial growth.",
+            "order_index": 3
+        },
+        {
+            "id": 5,
+            "question": "Do you offer custom packages?",
+            "answer": "Absolutely! We can compile a completely customized, scalable marketing and design bundle matching your unique business objectives, timeline constraints, and creative budget. Reach out via our booking blueprint form to request a custom quote.",
+            "order_index": 4
+        }
+    ],
+    "pillars": [
+        {
+            "id": 1,
+            "title": "24/7 Support",
+            "icon": "clock",
+            "description": "We provide continuous support to help your business grow without interruption.",
+            "delay": "0.1",
+            "order_index": 0
+        },
+        {
+            "id": 2,
+            "title": "Creative Design",
+            "icon": "palette",
+            "description": "We create modern and attractive designs for websites, ads, and branding.",
+            "delay": "0.2",
+            "order_index": 1
+        },
+        {
+            "id": 3,
+            "title": "SEO Optimization",
+            "icon": "trending-up",
+            "description": "Improve your website ranking and reach more customers through search engines.",
+            "delay": "0.3",
+            "order_index": 2
+        }
+    ],
+    "collaborators": [
+        {
+            "id": 1,
+            "name": "Partner 1",
+            "image_path": "assets/images/logo1.png",
+            "order_index": 1
+        },
+        {
+            "id": 2,
+            "name": "Partner 2",
+            "image_path": "assets/images/logo2.png",
+            "order_index": 2
+        },
+        {
+            "id": 3,
+            "name": "Partner 3",
+            "image_path": "assets/images/logo3.png",
+            "order_index": 3
+        },
+        {
+            "id": 4,
+            "name": "Partner 4",
+            "image_path": "assets/images/logo4.png",
+            "order_index": 4
+        },
+        {
+            "id": 5,
+            "name": "Partner 5",
+            "image_path": "assets/images/logo5.png",
+            "order_index": 5
+        },
+        {
+            "id": 6,
+            "name": "Partner 6",
+            "image_path": "assets/images/logo6.png",
+            "order_index": 6
+        },
+        {
+            "id": 7,
+            "name": "Partner 7",
+            "image_path": "assets/images/logo7.png",
+            "order_index": 7
+        },
+        {
+            "id": 8,
+            "name": "Partner 8",
+            "image_path": "assets/images/logo8.png",
+            "order_index": 8
+        },
+        {
+            "id": 9,
+            "name": "Partner 9",
+            "image_path": "assets/images/logo9.png",
+            "order_index": 9
+        },
+        {
+            "id": 10,
+            "name": "Partner 10",
+            "image_path": "assets/images/logo10.png",
+            "order_index": 10
+        },
+        {
+            "id": 11,
+            "name": "Partner 11",
+            "image_path": "assets/images/logo11.png",
+            "order_index": 11
+        },
+        {
+            "id": 12,
+            "name": "Partner 12",
+            "image_path": "assets/images/logo12.png",
+            "order_index": 12
+        },
+        {
+            "id": 13,
+            "name": "Partner 13",
+            "image_path": "assets/images/logo13.png",
+            "order_index": 13
+        },
+        {
+            "id": 14,
+            "name": "Partner 14",
+            "image_path": "assets/images/logo14.png",
+            "order_index": 14
+        },
+        {
+            "id": 15,
+            "name": "Partner 15",
+            "image_path": "assets/images/logo15.png",
+            "order_index": 15
+        },
+        {
+            "id": 16,
+            "name": "Partner 16",
+            "image_path": "assets/images/logo16.png",
+            "order_index": 16
+        },
+        {
+            "id": 17,
+            "name": "Partner 17",
+            "image_path": "assets/images/logo17.png",
+            "order_index": 17
+        },
+        {
+            "id": 18,
+            "name": "Partner 18",
+            "image_path": "assets/images/logo18.png",
+            "order_index": 18
+        },
+        {
+            "id": 19,
+            "name": "Partner 19",
+            "image_path": "assets/images/logo19.png",
+            "order_index": 19
+        },
+        {
+            "id": 20,
+            "name": "Partner 20",
+            "image_path": "assets/images/logo20.png",
+            "order_index": 20
+        },
+        {
+            "id": 21,
+            "name": "Partner 21",
+            "image_path": "assets/images/logo21.png",
+            "order_index": 21
+        },
+        {
+            "id": 22,
+            "name": "Partner 22",
+            "image_path": "assets/images/logo22.png",
+            "order_index": 22
+        }
+    ],
+    "inquiry_stats": {
+        "total": 0,
+        "by_status": [],
+        "popular_packages": [],
+        "recent_count_7d": 0
+    },
+    "admin_users": [
+        {
+            "id": 1,
+            "username": "admin",
+            "created_at": "2026-07-06 11:32:54"
+        }
+    ],
+    "custom_tables_data": []
+}

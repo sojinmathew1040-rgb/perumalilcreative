@@ -135,6 +135,23 @@ try {
         }
     }
 
+    // 4.5. Create portfolio_categories table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS `portfolio_categories` (
+        `id` INT AUTO_INCREMENT PRIMARY KEY,
+        `slug` VARCHAR(50) NOT NULL UNIQUE,
+        `name` VARCHAR(100) NOT NULL,
+        `order_index` INT DEFAULT 0
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $stmtCatCount = $pdo->query("SELECT COUNT(*) FROM `portfolio_categories`");
+    if ($stmtCatCount->fetchColumn() == 0) {
+        $pdo->exec("INSERT INTO `portfolio_categories` (`slug`, `name`, `order_index`) VALUES 
+            ('web', 'Web Development', 0),
+            ('video', 'Video Production', 1),
+            ('design', 'Graphic Design', 2)
+        ");
+    }
+
     // 5. Create portfolio_items table
     $pdo->exec("CREATE TABLE IF NOT EXISTS `portfolio_items` (
         `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -156,8 +173,19 @@ try {
             ['video', 'Corporate Videography', 'High-End Corporate Promos', 'Capturing brand concepts clearly to drive tangible results.', 'https://www.youtube.com/', 'assets/images/portfolio_marketing.png', 2],
             
             // Web Development (category: web)
-            ['web', 'UI/UX & Web Solutions', 'Luxury Architecture UI Design', 'Modern Awwwards-inspired layout with WebGL fluid backdrops.', 'https://perumalilcreative.com/', 'assets/images/portfolio_web.png', 0],
-            ['web', 'Dynamic Web Applications', 'Continuous Social Management System', 'Highly scalable dynamic system with automated scheduler modules.', 'https://perumalilcreative.com/scheduler', 'assets/images/portfolio_social.png', 1],
+            ['web', 'Luxury Jewellery & E-Commerce Web Architecture', 'K.P. Varkey & Sons', 'Modern gold & diamond boutique e-commerce web platform engineered with interactive catalogue browsing and luxury aesthetic styling.', 'https://kpvarkeyandsons.com/', 'assets/images/portfolio_kpvarkeyandsons.jpg', 1],
+            ['web', 'Fashion, Apparel & Comfort Wear E-Commerce', "Don's Magic", 'Modern lifestyle clothing and comfort-wear online store engineered with responsive catalogue browsing, cart workflow, and checkout integration.', 'https://donsmagic.com/', 'assets/images/portfolio_donsmagic.jpg', 2],
+            ['web', 'Hyperlocal Multi-Vendor Marketplace', 'Ente Angadi', 'High-performance digital marketplace connecting regional vendors, community commerce, and customers with seamless cart flow.', 'https://enteangadi.com/', 'assets/images/portfolio_enteangadi.jpg', 3],
+            ['web', 'Industrial & Commercial LPG Pipeline Solutions', 'National LPG Pipeline Service', 'Clean commercial service portal engineered for domestic and industrial gas pipeline installation, safety audits, and rapid quote requests.', 'https://lpgpipelineservice.com/', 'assets/images/portfolio_lpgpipelineservice.jpg', 4],
+            ['web', 'Global Education & Overseas Admissions Portal', 'GracePath Educational Consultancy', 'Sophisticated education and career navigation portal providing student counseling, verified university admissions, and visa guidance workflows.', 'https://gracepath.in/', 'assets/images/portfolio_gracepath.jpg', 5],
+            ['web', 'Luxury Hospitality & Resort Estates Showcase', 'The K Collection', 'Ultra-luxury nature resort architecture featuring K-Mansion, K-Manor, and K-Estates with cinematic visual framing and reservation inquiry workflows.', 'https://thekcollection.in/', 'assets/images/portfolio_thekcollection.jpg', 6],
+            ['web', 'Contemporary Visual Arts & Furniture Exhibition', 'OXO The Gallery', 'Editorial digital exhibition showcase designed with museum-grade typography and contemporary visual framing for curated artistic collections.', 'https://oxothegallery.com/', 'assets/images/portfolio_oxothegallery.jpg', 7],
+            ['web', 'Spiritual Centre & Live Streaming Community Portal', 'Tabore Prarthanalayam Pala', 'Serene community portal featuring retreat schedules, live streaming architectures, prayer request dispatching, and ministry updates.', 'https://taborepala.org/', 'assets/images/portfolio_taborepala.jpg', 8],
+            ['web', 'US Mortgage Processing & Corporate Financial Portal', 'Principle 1 Professional Services', 'Executive professional services website with corporate telemetry, service breakdowns, and strategic consultation booking pipelines.', 'https://principle1pro.com/', 'assets/images/portfolio_principle1pro.jpg', 9],
+            ['web', 'Launching Soon • Theatrical & Culinary Arts', 'Daba Magic', 'Modern digital platform currently in active development. Engineering an enchanting fusion of fine dining and theatrical entertainment.', 'https://dabamagic.com/', 'assets/images/portfolio_launching_soon.jpg', 10],
+            ['web', 'Launching Soon • International Healthcare Network', 'Health Jobs Global', 'Global clinical staffing and medical talent portal currently under active development to connect healthcare professionals across worldwide hospital networks.', 'https://healthjobsglobal.com/', 'assets/images/portfolio_launching_soon.jpg', 11],
+            ['web', 'Launching Soon • Pan-India Clinical Staffing', 'Health Jobs India', 'Targeted healthcare career exchange platform currently in development, dedicated to nationwide clinical recruitment and verified medical staffing.', 'https://healthjobsglobal.in/', 'assets/images/portfolio_launching_soon.jpg', 12],
+            ['web', 'Launching Soon • Eco-Agri Tourism & Nature Resort', 'Food Forest Kanthalloor', 'Bespoke nature-stay and eco-resort digital experience currently under active construction, featuring organic apple orchards and highland cottages.', 'https://foodforestkanthalloor.com/', 'assets/images/portfolio_launching_soon.jpg', 13],
             
             // Graphic Design (category: design)
             ['design', 'Brand Identity & Stationery', 'Minimalist Luxury Brand Identity', 'Sophisticated stationery system with hot-foil copper stamping on premium textured paper.', '#', 'assets/images/portfolio_brand.png', 0],

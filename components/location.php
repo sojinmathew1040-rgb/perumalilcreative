@@ -38,12 +38,12 @@
                     <h4 class="map-hud-title">Perumalil Creative</h4>
                     <p class="map-hud-address"><?php echo $settings['contact_address'] ?? 'First Floor, Kaimalayil Plaza<br>Opposite Viswajyothy College, Avoly P.O.<br>Vazhakulam, Kerala - 686670'; ?></p>
                     
-                    <div class="map-hud-telemetry" style="margin-bottom: 15px;">
+                    <div class="map-hud-telemetry location-telemetry-box">
                         <span>GPS: <?php echo htmlspecialchars($settings['hero_coords'] ?? '9.9487° N, 76.6294° E'); ?></span>
                     </div>
 
                     <a href="<?php echo htmlspecialchars($settings['location_maps_link'] ?? 'https://maps.app.goo.gl/sVnxVtQPHHKY5nWz8'); ?>" target="_blank" rel="noopener"
-                        class="directions-btn magnetic-btn" style="width: 100%; display: flex; justify-content: center; gap: 8px; font-size: 0.8rem; padding: 10px 16px;">
+                        class="directions-btn magnetic-btn location-directions-button">
                         <span>Get Directions</span>
                         <i data-lucide="navigation" size="14"></i>
                     </a>

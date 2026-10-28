@@ -33,10 +33,19 @@
 
 </div>
 
+<!-- Luxury 80% Screen Launching Soon Display Modal -->
+<?php include 'components/launching_soon_modal.php'; ?>
+
+<!-- Floating Shortcuts: Scroll to Top Arrow & WhatsApp FAB -->
+<?php include 'components/floating_actions.php'; ?>
+
+<!-- Studio AI Assistant Animated Companion (Nova) -->
+<?php include 'components/ai_assistant.php'; ?>
+
 <!-- Core Script Pipelines -->
 <script src="assets/js/webgl.js"></script>
-<script src="assets/js/animations.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="assets/js/animations.js?v=<?php echo @filemtime(__DIR__ . '/assets/js/animations.js') ?: time(); ?>"></script>
+<script src="assets/js/main.js?v=<?php echo @filemtime(__DIR__ . '/assets/js/main.js') ?: time(); ?>"></script>
 
 </body>
 

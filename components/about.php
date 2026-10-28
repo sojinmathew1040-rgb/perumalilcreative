@@ -31,37 +31,48 @@
     </div>
 
     <!-- About Us & Team Grid -->
-    <div class="about-grid about-us-section"
-        style="margin-top: 10vh; border-top: 1px solid var(--border-color); padding-top: 10vh;">
+    <div class="about-grid about-us-section about-section-divider">
         <div>
             <div class="section-label"><?php echo htmlspecialchars($settings['about_us_tagline'] ?? ''); ?></div>
             <h2 class="about-title">
                 <?php echo $settings['about_us_title'] ?? ''; ?>
             </h2>
-            <p class="about-statement" style="font-size: 1.4rem; line-height: 1.5; margin-top: 20px; font-weight: 300;">
+            <p class="about-statement about-statement-text">
                 <?php echo htmlspecialchars($settings['about_us_subtitle'] ?? ''); ?>
             </p>
-            <p class="about-desc"
-                style="color: var(--text-secondary); line-height: 1.6; margin-top: 20px; font-size: 1.05rem;">
+            <p class="about-desc about-desc-p1">
                 <?php echo htmlspecialchars($settings['about_us_desc1'] ?? ''); ?>
             </p>
-            <p class="about-desc"
-                style="color: var(--text-secondary); line-height: 1.6; margin-top: 15px; font-size: 1.05rem;">
+            <p class="about-desc about-desc-p2">
                 <?php echo htmlspecialchars($settings['about_us_desc2'] ?? ''); ?>
             </p>
         </div>
 
-        <div>
-            <div class="section-label">Our Leadership Team</div>
-            <div class="team-grid">
+        <div class="team-leadership-col">
+            <div class="team-header-row">
+                <div class="section-label">Our Leadership Team</div>
+                <div class="team-carousel-controls">
+                    <span class="team-carousel-counter" id="teamCounter">01 / 04</span>
+                    <button class="team-nav-arrow" id="teamPrevBtn" aria-label="Previous Team Member" type="button">
+                        <i data-lucide="chevron-left" size="14"></i>
+                    </button>
+                    <button class="team-nav-arrow" id="teamNextBtn" aria-label="Next Team Member" type="button">
+                        <i data-lucide="chevron-right" size="14"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="team-grid" id="teamGrid">
                 <?php
                 try {
                     $teamStmt = $pdo->query("SELECT * FROM team_members ORDER BY order_index ASC");
-                    while ($member = $teamStmt->fetch()) {
+                    $allMembers = $teamStmt->fetchAll();
+                    $totalMembers = count($allMembers);
+                    foreach ($allMembers as $mIdx => $member) {
+                        $activeClass = ($mIdx === 0) ? ' is-active' : '';
                         ?>
-                        <div class="team-card">
+                        <div class="team-card<?php echo $activeClass; ?>" data-index="<?php echo $mIdx; ?>">
                             <div class="team-img-wrap">
-                                <img src="<?php echo htmlspecialchars($member['image_path']); ?>" alt="<?php echo htmlspecialchars($member['name']); ?>" class="team-img">
+                                <img src="<?php echo htmlspecialchars($member['image_path']); ?>" alt="<?php echo htmlspecialchars($member['name']); ?>" class="team-img" loading="lazy">
                             </div>
                             <div class="team-details">
                                 <h3 class="team-name"><?php echo htmlspecialchars($member['name']); ?></h3>
@@ -71,9 +82,17 @@
                         <?php
                     }
                 } catch (Exception $e) {
-                    // Fail silently
+                    $allMembers = [];
+                    $totalMembers = 0;
                 }
                 ?>
+            </div>
+            <div class="team-carousel-indicators" id="teamIndicators">
+                <?php if ($totalMembers > 1): ?>
+                    <?php for ($i = 0; $i < $totalMembers; $i++): ?>
+                        <button class="team-indicator-dot <?php echo ($i === 0) ? 'is-active' : ''; ?>" data-slide="<?php echo $i; ?>" aria-label="Slide <?php echo $i + 1; ?>" type="button"></button>
+                    <?php endfor; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -3119,84 +3119,334 @@ body.nav-open {
     color: var(--text-secondary);
 }
 
-/* Team Grid and Profile Cards Styles */
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    margin-top: 30px;
+/* Dedicated Full-Width Team Showcase Section */
+.team-showcase-section {
+    margin-top: 10vh;
+    border-top: 1px solid var(--border-color);
+    padding-top: 8vh;
+    position: relative;
+    width: 100%;
 }
 
+.team-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.team-header-left {
+    max-width: 650px;
+}
+
+.team-showcase-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 800;
+    line-height: 1.15;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-top: 8px;
+    letter-spacing: -0.5px;
+}
+
+.team-carousel-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-carousel-counter {
+    font-family: var(--font-editorial);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent);
+    background: rgba(0, 102, 255, 0.08);
+    border: 1px solid rgba(0, 102, 255, 0.25);
+    padding: 6px 14px;
+    border-radius: 100px;
+}
+
+.team-nav-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0;
+}
+
+.team-nav-arrow:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
+}
+
+.team-nav-arrow:active {
+    transform: scale(0.95);
+}
+
+/* Circular Auto-Scrolling Horizontal Slider Wrap */
+.team-slider-viewport-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.team-slider-fade-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: clamp(24px, 5vw, 65px);
+    height: 100%;
+    background: linear-gradient(to right, var(--bg-dark) 0%, transparent 100%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.team-slider-fade-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: clamp(24px, 5vw, 65px);
+    height: 100%;
+    background: linear-gradient(to left, var(--bg-dark) 0%, transparent 100%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Horizontal Slider Viewport */
+.team-slider-viewport {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 10px 4px 20px 4px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.team-slider-viewport.is-dragging {
+    cursor: grabbing;
+}
+
+.team-slider-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.team-grid {
+    display: flex;
+    gap: 24px;
+    margin-top: 10px;
+    width: max-content;
+    min-width: 100%;
+}
+
+/* Desktop: 4 cards visible across the full width */
 .team-card {
+    flex: 0 0 calc((100vw - (2 * var(--padding-side)) - (3 * 24px)) / 4);
+    width: calc((100vw - (2 * var(--padding-side)) - (3 * 24px)) / 4);
+    max-width: 340px;
+    min-width: 250px;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    position: relative;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 14px;
+    transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, background 0.4s ease;
+}
+
+.team-card:hover {
+    border-color: rgba(0, 102, 255, 0.45);
+    background: rgba(12, 13, 18, 0.85);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 102, 255, 0.12);
 }
 
 .team-img-wrap {
     width: 100%;
-    aspect-ratio: 3 / 4; /* Editorial portrait crop */
-    border-radius: 20px;
+    aspect-ratio: 3 / 4;
+    border-radius: 18px;
     overflow: hidden;
-    border: 1px solid var(--border-color);
+    position: relative;
     background-color: var(--bg-card);
-    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.team-index-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 3;
+    font-family: var(--font-editorial);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 1px;
 }
 
 .team-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(1) contrast(1.05); /* Black-and-white editorial aesthetic */
-    opacity: 0.8;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.team-card:hover .team-img-wrap {
-    border-color: var(--accent);
-    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15);
+    filter: grayscale(0.9) contrast(1.05);
+    opacity: 0.9;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease, opacity 0.5s ease;
 }
 
 .team-card:hover .team-img {
-    transform: scale(1.05);
+    transform: scale(1.06);
     filter: grayscale(0) contrast(1);
     opacity: 1;
 }
 
+.team-img-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(5, 5, 5, 0.7) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 2;
+}
+
 .team-details {
-    padding-top: 12px;
+    padding: 16px 6px 6px 6px;
 }
 
 .team-name {
     font-family: var(--font-heading);
-    font-size: 1.05rem;
-    font-weight: 700;
+    font-size: 1.15rem;
+    font-weight: 800;
     color: var(--text-primary);
     margin: 0;
     text-transform: uppercase;
     letter-spacing: -0.2px;
+    line-height: 1.2;
 }
 
 .team-role {
     font-family: var(--font-editorial);
     font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin-top: 3px;
+    color: var(--accent);
+    margin-top: 5px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
+    font-weight: 600;
 }
 
-.team-header-row {
+/* Team Slider Progress Bar & Dots */
+.team-slider-footer {
+    margin-top: 25px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.team-progress-track {
+    width: 100%;
+    max-width: 320px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    overflow: hidden;
+    position: relative;
+}
+
+.team-progress-bar {
+    height: 100%;
+    width: 25%;
+    background: linear-gradient(90deg, var(--accent) 0%, #38bdf8 100%);
+    border-radius: 100px;
+    transition: width 0.3s ease;
+}
+
+.team-carousel-indicators {
+    display: flex;
+    gap: 8px;
     align-items: center;
 }
 
-.team-carousel-controls,
-.team-carousel-indicators,
-.team-swipe-hint,
-.team-scroll-indicator-bar {
-    display: none;
+.team-indicator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.team-indicator-dot.is-active {
+    background: var(--accent);
+    width: 24px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--accent);
+}
+
+/* About Us Narrative Styling */
+.about-us-narrative-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about-capability-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.about-cap-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-editorial);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 16px;
+    border-radius: 100px;
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+
+.about-cap-pill:hover {
+    border-color: rgba(0, 102, 255, 0.4);
+    color: #ffffff;
+    background: rgba(0, 102, 255, 0.06);
+}
+
+.about-cap-pill .cap-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
 }
 
 /* 12. Contact Section & dynamic form package pricing */
@@ -6352,12 +6602,23 @@ textarea.form-control {
         font-size: 0.92rem !important;
     }
 
-    /* Mobile Leadership Team Spotlight Transition Loop */
+    /* Mobile & Tablet Leadership Team Slider */
+    .team-showcase-section {
+        margin-top: 40px !important;
+        padding-top: 40px !important;
+    }
+
     .team-header-row {
         display: flex !important;
         justify-content: space-between !important;
-        align-items: center !important;
-        margin-bottom: 14px !important;
+        align-items: flex-end !important;
+        gap: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .team-showcase-title {
+        font-size: clamp(1.4rem, 5.5vw, 1.85rem) !important;
+        line-height: 1.2 !important;
     }
 
     .team-carousel-controls {
@@ -6379,8 +6640,8 @@ textarea.form-control {
     }
 
     .team-nav-arrow {
-        width: 30px !important;
-        height: 30px !important;
+        width: 36px !important;
+        height: 36px !important;
         border-radius: 50% !important;
         background: rgba(255, 255, 255, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -6399,58 +6660,56 @@ textarea.form-control {
         border-color: var(--accent) !important;
     }
 
-    .team-swipe-hint {
-        display: none !important;
-    }
-
-    .team-scroll-indicator-bar {
-        display: none !important;
-    }
-
-    .team-leadership-col {
+    .team-slider-viewport {
         width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 6px 0 16px 0 !important;
     }
 
     .team-grid {
-        position: relative !important;
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        grid-template-rows: auto !important;
-        grid-template-areas: "spotlight" !important;
-        width: 100% !important;
-        max-width: 320px !important;
-        margin: 10px auto 0 auto !important;
-        touch-action: pan-y !important;
-        user-select: none !important;
-        -webkit-user-select: none !important;
+        position: static !important;
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 16px !important;
+        width: max-content !important;
+        min-width: 100% !important;
+        margin: 0 !important;
+        scroll-snap-type: x mandatory !important;
+        user-select: auto !important;
+        -webkit-user-select: auto !important;
     }
 
     .team-card {
-        grid-area: spotlight !important;
-        width: 100% !important;
-        max-width: 100% !important;
+        grid-area: auto !important;
         display: flex !important;
         flex-direction: column !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        transform: scale(0.96) translateY(8px) !important;
-        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-                    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-                    visibility 0.5s !important;
-        pointer-events: none !important;
-        z-index: 1 !important;
-    }
-
-    .team-card.is-active {
         opacity: 1 !important;
         visibility: visible !important;
-        transform: scale(1) translateY(0) !important;
+        transform: none !important;
         pointer-events: auto !important;
-        z-index: 2 !important;
+        z-index: 1 !important;
+        position: relative !important;
+        width: calc((100vw - (2 * var(--padding-side)) - 16px) / 2) !important;
+        flex: 0 0 calc((100vw - (2 * var(--padding-side)) - 16px) / 2) !important;
+        max-width: 280px !important;
+        min-width: 200px !important;
+        scroll-snap-align: start !important;
+        border-radius: 20px !important;
+        padding: 10px !important;
+    }
+
+    @media (max-width: 580px) {
+        .team-card {
+            width: 78vw !important;
+            flex: 0 0 78vw !important;
+            max-width: 280px !important;
+            min-width: 220px !important;
+        }
     }
 
     .team-img-wrap {
-        border-radius: 18px !important;
+        border-radius: 14px !important;
         aspect-ratio: 3 / 4 !important;
         width: 100% !important;
         overflow: hidden !important;
@@ -6477,12 +6736,12 @@ textarea.form-control {
     }
 
     .team-details {
-        padding-top: 14px !important;
+        padding: 12px 4px 4px 4px !important;
         text-align: left !important;
     }
 
     .team-name {
-        font-size: 1.2rem !important;
+        font-size: 1.05rem !important;
         font-weight: 800 !important;
         color: #ffffff !important;
         letter-spacing: -0.3px !important;
@@ -6490,12 +6749,21 @@ textarea.form-control {
     }
 
     .team-role {
-        font-size: 0.8rem !important;
+        font-size: 0.74rem !important;
         color: var(--accent) !important;
         font-weight: 600 !important;
         letter-spacing: 1px !important;
         text-transform: uppercase !important;
-        margin-top: 4px !important;
+        margin-top: 3px !important;
+    }
+
+    .team-slider-footer {
+        margin-top: 18px !important;
+        gap: 12px !important;
+    }
+
+    .team-progress-track {
+        max-width: 200px !important;
     }
 
     /* Team Spotlight Indicators */
@@ -6504,7 +6772,7 @@ textarea.form-control {
         justify-content: center !important;
         align-items: center !important;
         gap: 8px !important;
-        margin-top: 16px !important;
+        margin-top: 10px !important;
     }
 
     .team-indicator-dot {
@@ -6519,7 +6787,7 @@ textarea.form-control {
     }
 
     .team-indicator-dot.is-active {
-        width: 26px !important;
+        width: 22px !important;
         background: var(--accent) !important;
         box-shadow: 0 0 10px var(--accent) !important;
     }

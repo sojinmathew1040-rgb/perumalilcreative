@@ -145,145 +145,215 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. Mobile Leadership Team In-Place Spotlight Disappearing & Appearing Loop
+    // 3. Continuous Circular Auto-Scrolling Leadership Team Showcase
+    const teamSliderViewport = document.getElementById('teamSliderViewport');
     const teamGrid = document.getElementById('teamGrid');
-    if (teamGrid) {
+    if (teamSliderViewport && teamGrid) {
         const cards = Array.from(teamGrid.querySelectorAll('.team-card'));
         const counterEl = document.getElementById('teamCounter');
         const prevBtn = document.getElementById('teamPrevBtn');
         const nextBtn = document.getElementById('teamNextBtn');
+        const progressBar = document.getElementById('teamProgressBar');
         const dots = Array.from(document.querySelectorAll('.team-indicator-dot'));
         const totalCards = cards.length;
+        const totalUnique = parseInt(teamGrid.getAttribute('data-total-unique') || totalCards, 10);
+        const repeatCount = parseInt(teamGrid.getAttribute('data-repeat-count') || 1, 10);
 
-        if (totalCards > 1) {
-            let currentIndex = 0;
+        if (totalCards > 0) {
+            function getCardStep() {
+                if (!cards.length) return 300;
+                const firstCard = cards[0];
+                const style = window.getComputedStyle(teamGrid);
+                const gap = parseFloat(style.gap) || 24;
+                return firstCard.offsetWidth + gap;
+            }
+
+            function getCycleWidth() {
+                const cardStep = getCardStep();
+                return totalUnique * cardStep;
+            }
+
+            function checkCircularWrap() {
+                const cycleWidth = getCycleWidth();
+                if (cycleWidth <= 0) return;
+
+                // Seamless infinite wrap forward
+                if (teamSliderViewport.scrollLeft >= cycleWidth * (repeatCount - 1)) {
+                    teamSliderViewport.scrollLeft -= cycleWidth;
+                } 
+                // Seamless infinite wrap backward
+                else if (teamSliderViewport.scrollLeft <= 5) {
+                    teamSliderViewport.scrollLeft += cycleWidth;
+                }
+            }
+
+            function updateSliderUI() {
+                if (!cards.length) return;
+                const scrollLeft = teamSliderViewport.scrollLeft;
+                const cardStep = getCardStep();
+
+                // Compute active member index within the unique set [0 .. totalUnique-1]
+                let activeIndex = Math.floor((scrollLeft + (cardStep * 0.4)) / cardStep) % totalUnique;
+                if (activeIndex < 0) activeIndex = (activeIndex + totalUnique) % totalUnique;
+
+                // Update live counter (e.g. 01 / 06)
+                if (counterEl) {
+                    const curStr = String(activeIndex + 1).padStart(2, '0');
+                    const totStr = String(totalUnique).padStart(2, '0');
+                    counterEl.textContent = `${curStr} / ${totStr}`;
+                }
+
+                // Update circular progress bar
+                if (progressBar) {
+                    let progress = ((activeIndex + 1) / totalUnique) * 100;
+                    progressBar.style.width = `${progress}%`;
+                }
+
+                // Update indicator dots
+                dots.forEach((dot, dIdx) => {
+                    dot.classList.toggle('is-active', dIdx === activeIndex);
+                });
+            }
+
+            // Continuous Circular Smooth Auto-Scroll Engine
+            const scrollSpeed = 0.85; // Silky smooth, calm cinematic velocity
+            let isPaused = false;
             let isUserInteracting = false;
             let resumeTimeout = null;
-            const SLIDE_DURATION = 3200; // Switch member every 3.2 seconds
-            const PAUSE_DURATION = 4000; // Pause 4s on user touch/click then resume
+            let animationFrameId = null;
 
-            function updateCounter(index) {
-                if (!counterEl) return;
-                const currentStr = String(index + 1).padStart(2, '0');
-                const totalStr = String(totalCards).padStart(2, '0');
-                counterEl.textContent = `${currentStr} / ${totalStr}`;
-            }
-
-            function updateDots(index) {
-                dots.forEach((dot, dIdx) => {
-                    dot.classList.toggle('is-active', dIdx === index);
-                });
-            }
-
-            function goToMember(targetIndex) {
-                if (targetIndex < 0) {
-                    targetIndex = totalCards - 1;
-                } else if (targetIndex >= totalCards) {
-                    targetIndex = 0;
+            function autoScrollLoop() {
+                if (!isPaused && !isUserInteracting) {
+                    teamSliderViewport.scrollLeft += scrollSpeed;
+                    checkCircularWrap();
                 }
-
-                currentIndex = targetIndex;
-
-                cards.forEach((card, cIdx) => {
-                    if (cIdx === currentIndex) {
-                        card.classList.add('is-active');
-                    } else {
-                        card.classList.remove('is-active');
-                    }
-                });
-
-                updateCounter(currentIndex);
-                updateDots(currentIndex);
+                animationFrameId = requestAnimationFrame(autoScrollLoop);
             }
 
-            function nextMember() {
-                goToMember(currentIndex + 1);
-            }
+            // Start auto-scrolling
+            animationFrameId = requestAnimationFrame(autoScrollLoop);
 
-            function prevMember() {
-                goToMember(currentIndex - 1);
-            }
-
-            function pauseAutoLoop() {
-                isUserInteracting = true;
-                if (resumeTimeout) clearTimeout(resumeTimeout);
-                resumeTimeout = setTimeout(() => {
-                    isUserInteracting = false;
-                }, PAUSE_DURATION);
-            }
-
-            function isTeamSectionInView() {
-                const rect = teamGrid.getBoundingClientRect();
-                const vh = window.innerHeight || document.documentElement.clientHeight;
-                return rect.top < vh && rect.bottom > 0;
-            }
-
-            // Continuous In-Place Disappear & Appear Auto-Loop
-            const autoLoopTimer = setInterval(() => {
-                // Only run on mobile/tablet screen widths
-                if (window.innerWidth <= 991 && !isUserInteracting) {
-                    if (isTeamSectionInView()) {
-                        nextMember();
-                    }
+            // Pause on mouse hover over the slider or cards
+            const showcaseWrap = teamSliderViewport.closest('.team-showcase-section') || teamSliderViewport;
+            showcaseWrap.addEventListener('mouseenter', () => {
+                isPaused = true;
+            });
+            showcaseWrap.addEventListener('mouseleave', () => {
+                if (!isUserInteracting) {
+                    isPaused = false;
                 }
-            }, SLIDE_DURATION);
+            });
 
-            // Manual Arrow Controls
+            // Button controls: Step Forward & Backward circularly
             if (nextBtn) {
                 nextBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    pauseAutoLoop();
-                    nextMember();
+                    isUserInteracting = true;
+                    clearTimeout(resumeTimeout);
+                    const cardStep = getCardStep();
+                    teamSliderViewport.scrollBy({ left: cardStep, behavior: 'smooth' });
+                    resumeTimeout = setTimeout(() => {
+                        checkCircularWrap();
+                        isUserInteracting = false;
+                    }, 650);
                 });
             }
 
             if (prevBtn) {
                 prevBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    pauseAutoLoop();
-                    prevMember();
+                    isUserInteracting = true;
+                    clearTimeout(resumeTimeout);
+                    const cardStep = getCardStep();
+                    const cycleWidth = getCycleWidth();
+                    if (teamSliderViewport.scrollLeft <= cardStep) {
+                        teamSliderViewport.scrollLeft += cycleWidth;
+                    }
+                    teamSliderViewport.scrollBy({ left: -cardStep, behavior: 'smooth' });
+                    resumeTimeout = setTimeout(() => {
+                        checkCircularWrap();
+                        isUserInteracting = false;
+                    }, 650);
                 });
             }
 
-            // Dot Indicator Controls
+            // Indicator dot click navigation
             dots.forEach((dot, dotIdx) => {
                 dot.addEventListener('click', (e) => {
                     e.preventDefault();
-                    pauseAutoLoop();
-                    goToMember(dotIdx);
+                    isUserInteracting = true;
+                    clearTimeout(resumeTimeout);
+                    const cardStep = getCardStep();
+                    const cycleWidth = getCycleWidth();
+                    const currentCycle = Math.floor(teamSliderViewport.scrollLeft / cycleWidth);
+                    const targetScroll = (currentCycle * cycleWidth) + (dotIdx * cardStep);
+                    teamSliderViewport.scrollTo({ left: targetScroll, behavior: 'smooth' });
+                    resumeTimeout = setTimeout(() => {
+                        checkCircularWrap();
+                        isUserInteracting = false;
+                    }, 650);
                 });
             });
 
-            // Touch Swipe Support (Left = Next, Right = Prev)
-            let touchStartX = 0;
-            let touchStartY = 0;
+            // Desktop Mouse Click & Drag to inspect
+            let isDown = false;
+            let startX;
+            let scrollLeftStart;
 
-            teamGrid.addEventListener('touchstart', (e) => {
-                if (e.touches && e.touches.length > 0) {
-                    touchStartX = e.touches[0].clientX;
-                    touchStartY = e.touches[0].clientY;
-                    pauseAutoLoop();
+            teamSliderViewport.addEventListener('mousedown', (e) => {
+                isDown = true;
+                isUserInteracting = true;
+                clearTimeout(resumeTimeout);
+                teamSliderViewport.classList.add('is-dragging');
+                startX = e.pageX - teamSliderViewport.offsetLeft;
+                scrollLeftStart = teamSliderViewport.scrollLeft;
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isDown) {
+                    isDown = false;
+                    teamSliderViewport.classList.remove('is-dragging');
+                    resumeTimeout = setTimeout(() => {
+                        checkCircularWrap();
+                        isUserInteracting = false;
+                    }, 1000);
                 }
+            });
+
+            teamSliderViewport.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - teamSliderViewport.offsetLeft;
+                const walk = (x - startX) * 1.6;
+                teamSliderViewport.scrollLeft = scrollLeftStart - walk;
+                checkCircularWrap();
+            });
+
+            // Touch support for tablets & mobiles
+            teamSliderViewport.addEventListener('touchstart', () => {
+                isUserInteracting = true;
+                clearTimeout(resumeTimeout);
             }, { passive: true });
 
-            teamGrid.addEventListener('touchend', (e) => {
-                if (e.changedTouches && e.changedTouches.length > 0) {
-                    const diffX = e.changedTouches[0].clientX - touchStartX;
-                    const diffY = e.changedTouches[0].clientY - touchStartY;
-                    // Detect deliberate horizontal swipe of 30px or more
-                    if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
-                        if (diffX < 0) {
-                            nextMember();
-                        } else {
-                            prevMember();
-                        }
-                        pauseAutoLoop();
-                    }
-                }
+            teamSliderViewport.addEventListener('touchend', () => {
+                resumeTimeout = setTimeout(() => {
+                    checkCircularWrap();
+                    isUserInteracting = false;
+                }, 1200);
             }, { passive: true });
 
-            // Initialize slide 0 state
-            goToMember(0);
+            // Scroll & Resize listeners for real-time UI synchronization
+            teamSliderViewport.addEventListener('scroll', updateSliderUI, { passive: true });
+            window.addEventListener('resize', () => {
+                checkCircularWrap();
+                updateSliderUI();
+            }, { passive: true });
+
+            // Initialize position & UI
+            setTimeout(() => {
+                checkCircularWrap();
+                updateSliderUI();
+            }, 100);
         }
     }
 });

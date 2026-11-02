@@ -1,6 +1,6 @@
 -- ========================================================
 -- Perumalil Creative - Database Backup Dump
--- Backup Date & Time: 2026-11-02 20:38:06 (IST)
+-- Backup Date & Time: 2026-11-02 21:05:21 (IST)
 -- Database: `perumalil_creative`
 -- Host: localhost
 -- ========================================================
@@ -343,7 +343,7 @@ CREATE TABLE `team_members` (
   `image_path` varchar(255) NOT NULL,
   `order_index` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table `team_members` (4 rows)
 INSERT INTO `team_members` (`id`, `name`, `role`, `image_path`, `order_index`) VALUES

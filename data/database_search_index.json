@@ -2605,6 +2605,29 @@
     },
     {
         "type": "site_content",
+        "id": "component_about",
+        "title": "About Section Content",
+        "content": "Cinematic 4K Visuals Full-Stack Development Performance Marketing The Creative Minds & Architects",
+        "keywords": [
+            "cinematic",
+            "4k",
+            "visuals",
+            "full",
+            "stack",
+            "development",
+            "performance",
+            "marketing",
+            "creative",
+            "minds",
+            "architects"
+        ],
+        "meta": {
+            "component": "about",
+            "file": "about.php"
+        }
+    },
+    {
+        "type": "site_content",
         "id": "component_contact",
         "title": "Contact Section Content",
         "content": "Select a Specialized Agency Package Describe Your Creative Goals Send Creative Blueprint Thank you! Our creative director will analyze your package preferences and reach out within 12 Submit Another Inquiry",

@@ -2,6 +2,21 @@
 // export_db_backup.php - Database Backup Generator for Perumalil Creative
 header('Content-Type: application/json; charset=utf-8');
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$isAdmin = !empty($_SESSION['admin_logged_in']);
+$remote = $_SERVER['REMOTE_ADDR'] ?? '';
+$isLocalhost = in_array($remote, ['127.0.0.1', '::1']) || strpos($remote, '192.168.') === 0 || strpos($remote, '10.') === 0 || empty($remote);
+$isCli = (php_sapi_name() === 'cli');
+
+if (!$isAdmin && !$isLocalhost && !$isCli) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'error' => 'Unauthorized access.']);
+    exit;
+}
+
 require_once __DIR__ . '/includes/db.php';
 
 if (!isset($pdo)) {
@@ -88,6 +103,11 @@ try {
     // Write directly to db/perumalil_creative.sql
     $targetFile = __DIR__ . '/db/perumalil_creative.sql';
     file_put_contents($targetFile, $sqlDump);
+
+    if (isset($_GET['redirect']) && $_GET['redirect'] === 'admin') {
+        header('Location: admin/index.php?backup=success');
+        exit;
+    }
 
     echo json_encode([
         'success' => true,

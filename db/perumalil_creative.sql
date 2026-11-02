@@ -1,6 +1,6 @@
 -- ========================================================
 -- Perumalil Creative - Database Backup Dump
--- Backup Date & Time: 2026-10-26 14:08:14 (IST)
+-- Backup Date & Time: 2026-11-02 20:38:06 (IST)
 -- Database: `perumalil_creative`
 -- Host: localhost
 -- ========================================================
@@ -267,7 +267,7 @@ INSERT INTO `site_settings` (`setting_key`, `setting_value`) VALUES
 ('about_us_tagline', 'About Us'),
 ('about_us_title', 'Your Partner in<br>Digital Growth'),
 ('ai_bot_name', 'Nova'),
-('ai_enabled', '1'),
+('ai_enabled', '0'),
 ('ai_greeting_desc', 'How can I help you today?'),
 ('ai_greeting_title', 'Hi! I am Nova 👋'),
 ('contact_address', 'First Floor, Kaimalayil Plaza<br>Opposite Viswajyothy College, Avoly P.O.<br>Vazhakulam, Kerala - 686670'),

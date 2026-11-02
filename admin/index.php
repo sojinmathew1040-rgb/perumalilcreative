@@ -890,6 +890,10 @@ try {
                     <p>Modify and manage the digital architecture of Perumalil Creative</p>
                 </div>
                 <div class="header-action-group">
+                    <button type="button" class="preview-toggle-top-btn" id="dbBackupTopBtn" onclick="runDatabaseBackup()" title="Save current database state to db/perumalil_creative.sql">
+                        <i data-lucide="database" size="15"></i>
+                        <span id="dbBackupBtnText">Backup DB</span>
+                    </button>
                     <button type="button" class="preview-toggle-top-btn" id="previewToggleTopBtn" onclick="toggleAdminPreview()" title="Toggle live frontend preview panel">
                         <i data-lucide="split" size="15"></i>
                         <span id="previewToggleBtnText">Show Live Preview</span>
@@ -902,6 +906,12 @@ try {
             </div>
 
             <!-- Alerts System -->
+            <?php if (isset($_GET['backup']) && $_GET['backup'] === 'success'): ?>
+                <div class="alert alert-success">
+                    <i data-lucide="check-circle" size="20"></i>
+                    <span>Database backup updated successfully to <strong>db/perumalil_creative.sql</strong>!</span>
+                </div>
+            <?php endif; ?>
             <?php if ($success_msg !== ''): ?>
                 <div class="alert alert-success">
                     <i data-lucide="check-circle" size="20"></i>
@@ -5348,6 +5358,34 @@ try {
             setTimeout(refreshAdminPreview, 350);
             <?php endif; ?>
         });
+
+        // Trigger manual database backup to db/perumalil_creative.sql
+        function runDatabaseBackup() {
+            const btn = document.getElementById('dbBackupTopBtn');
+            const textSpan = document.getElementById('dbBackupBtnText');
+            if (!btn) return;
+
+            const originalText = textSpan ? textSpan.textContent : 'Backup DB';
+            if (textSpan) textSpan.textContent = 'Backing up...';
+            btn.disabled = true;
+
+            fetch('../export_db_backup.php')
+                .then(res => res.json())
+                .then(data => {
+                    btn.disabled = false;
+                    if (textSpan) textSpan.textContent = originalText;
+                    if (data && data.success) {
+                        alert('✅ Database backup completed successfully!\n\nSaved to: db/perumalil_creative.sql\nTables backed up: ' + data.tables_count + '\nBackup Time: ' + data.backup_time);
+                    } else {
+                        alert('❌ Backup failed: ' + (data && data.error ? data.error : 'Unknown error'));
+                    }
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    if (textSpan) textSpan.textContent = originalText;
+                    alert('❌ Backup request error: ' + err.message);
+                });
+        }
     </script>
 </body>
 </html>
